@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bikefundo"
+    tools:context=".altersenha">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="81dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:contentDescription="logoimage"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="139dp"
+        tools:layout_editor_absoluteY="185dp" />
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/oldsenha"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="143dp"
+        android:hint="Digite sua senha antiga"
+        android:inputType="textWebPassword"
+        android:textColor="@color/bootstrap_brand_success"
+        android:textColorLink="@color/bootstrap_brand_success"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="xl"
+        app:roundedCorners="true" />
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/oldsenha2"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="204dp"
+        android:hint="Digite sua nova senha"
+        android:inputType="textWebPassword"
+        android:textColor="@color/bootstrap_brand_success"
+        android:textColorLink="@color/bootstrap_brand_success"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="xl"
+        app:roundedCorners="true" />
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/oldsenha3"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="248dp"
+        android:hint="Confirme nova senha"
+        android:inputType="textEmailAddress|textWebPassword"
+        android:textColor="@color/bootstrap_brand_success"
+        android:textColorLink="@color/bootstrap_brand_success"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="xl"
+        app:roundedCorners="true" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/alterabt"
+        android:layout_width="131dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="149dp"
+        android:text="Alterar"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+</RelativeLayout>

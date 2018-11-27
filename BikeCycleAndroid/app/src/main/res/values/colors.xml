@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5cb85c</color>
+    <color name="colorPrimaryDark">#2f652f</color>
+    <color name="colorAccent">#61af2a</color>
+    <color name="background">#f7f7f7</color>
+    <color name="bikefundo">#f7f7f7</color>
+</resources>

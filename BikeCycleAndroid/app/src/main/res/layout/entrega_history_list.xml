@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:padding="5dp">
+
+    <com.beardedhen.androidbootstrap.BootstrapLabel
+        android:id="@+id/statustx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/horast"
+        android:layout_alignParentStart="true"
+        android:text="Aceito, aguarde o entregador"
+        app:bootstrapBrand="secondary"
+        app:bootstrapHeading="h5"
+        app:roundedCorners="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapProgressBar
+        android:id="@+id/progbar"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"
+        app:animated="false"
+        app:bootstrapBrand="warning"
+        app:bootstrapMaxProgress="4"
+        app:bootstrapProgress="1"
+        app:bootstrapshowPercentage="false"
+        app:roundedCorners="true"
+        app:striped="true" />
+
+    <TextView
+        android:id="@+id/datast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/progbar"
+        android:layout_alignTop="@+id/statustx"
+        android:text="20/04/2018" />
+
+    <TextView
+        android:id="@+id/horast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/progbar"
+        android:layout_centerVertical="true"
+        android:text="20:30" />
+
+
+</RelativeLayout>

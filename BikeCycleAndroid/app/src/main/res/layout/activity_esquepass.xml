@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bikefundo"
+    tools:context=".esquepass">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="81dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:contentDescription="logoimage"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="139dp"
+        tools:layout_editor_absoluteY="185dp" />
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/emailadessforg"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="143dp"
+        android:hint="Digite seu e-mail"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/bootstrap_brand_success"
+        android:textColorLink="@color/bootstrap_brand_success"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="xl"
+        app:roundedCorners="true" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/tx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="237dp"
+        android:text="Será enviado um email para você com sua nova senha"
+        app:bootstrapBrand="regular" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/Cliente"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/entregabutton"
+        android:layout_marginEnd="21dp"
+        android:text="Cliente"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="xl"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="true" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/entregabutton"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/emailadessforg"
+        android:layout_marginTop="242dp"
+        android:text="Entregador"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="xl"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/sendforgot"
+        android:layout_width="131dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="183dp"
+        android:text="Enviar"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/voltar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="145dp"
+        android:text="Voltar"
+        android:textStyle="bold"
+        app:bootstrapBrand="success" />
+
+
+</RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Selecione uma das opções a baixo:"
+                app:bootstrapBrand="regular" />
+        </RelativeLayout>
+
+        <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:id="@+id/altsenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:padding="0dp"
+            android:text="Alterar senha"
+            app:bootstrapBrand="success"
+            app:bootstrapHeading="h3"
+            app:roundedCorners="false" />
+        <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:id="@+id/altcad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:padding="0dp"
+            android:text="Alterar Cadastro"
+            app:bootstrapBrand="success"
+            app:bootstrapHeading="h3"
+            app:roundedCorners="false" />
+
+        <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:id="@+id/bootstrapLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:padding="0dp"
+            android:text="Contatar Suporte"
+            app:bootstrapBrand="success"
+            app:bootstrapHeading="h3"
+            app:roundedCorners="false" />
+
+        <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:id="@+id/saibot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:padding="0dp"
+            android:text="Sair"
+            app:bootstrapBrand="regular"
+            app:bootstrapHeading="h3"
+            app:roundedCorners="false" />
+
+    </LinearLayout>
+</RelativeLayout>
