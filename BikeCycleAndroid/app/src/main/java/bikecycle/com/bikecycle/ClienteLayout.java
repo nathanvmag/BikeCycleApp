@@ -1,7 +1,9 @@
 package bikecycle.com.bikecycle;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -72,6 +74,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     ((TextView)findViewById(R.id.benvindclient)).setText("Bem vindo: "+nome);
                     new DownloadImageTask((ImageView) findViewById(R.id.clientlogo))
                             .execute(loginPage.basesite+myfoto);
+                    getdispo();
                     findViewById(R.id.solicita).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
@@ -87,8 +90,11 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                     if(resp.equals("OK"))
                                     {
                                         findViewById(R.id.navigation_dashboard2).callOnClick();
+                                        if(entregadoresDisponiveis>0)
                                         Toast.makeText(getBaseContext(),"Sucesso ao realizar pedido, aguarde por entregadores  ",Toast.LENGTH_LONG).show();
-
+                                        else {
+                                            utils.toast(view.getContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
+                                        }
                                     }
                                     else{
                                         Toast.makeText(getBaseContext(),"Falha ao solicitar entregador "+resp,Toast.LENGTH_LONG).show();
@@ -139,7 +145,57 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 entregaAdpter adapter =
                                         new entregaAdpter(ents, getBaseContext());
                                 lv.setAdapter(adapter);
+                                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                    @Override
+                                    public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
+                                        final Entrega entrega= (Entrega)adapterView.getItemAtPosition(i);
+                                        if(entrega.statusid==0)
+                                        {
+                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    switch (which){
+                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                            RequestParams rp = new RequestParams();
+                                                            rp.add("servID","445");
+                                                            rp.add("entid",entrega.entregaid+"");
+                                                            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                                @Override
+                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                    String resp= new String(responseBody);
+                                                                    if(resp.equals("OK"))
+                                                                    {
+                                                                        findViewById(R.id.navigation_dashboard2).callOnClick();
+                                                                        utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
 
+                                                                    }
+                                                                    else {
+                                                                        utils.toast(view.getContext(),"Falha ao cancelar o pedido "+resp);
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                    utils.toast(view.getContext(),"Falha ao cancelar o pedido "+new String(responseBody));
+                                                                }
+                                                            });
+
+                                                            break;
+
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                            break;
+                                                    }
+                                                }
+                                            };
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                            builder.setMessage("Você tem certeza que deseja cancelar esse pedido ?").setPositiveButton("Sim", dialogClickListener)
+                                                    .setNegativeButton("Não", dialogClickListener).show();
+                                        }
+                                        return false;
+                                    }
+                                });
                                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -284,7 +340,6 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                                     }
                                         else{
-                                            tx.setVisibility(View.VISIBLE);
                                             Toast.makeText(getBaseContext(),"Este pedido não possui entregador ainda",Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -399,57 +454,61 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
     public void run() {
         handler.postDelayed(this,10000);
         if(inMain){
-            RequestParams rp= new RequestParams();
-            rp.add("servID","65");
-            rp.add("id",myid);
-            utils.log("Comecei");
-
-            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try{
-                        int a = Integer.parseInt(new String(responseBody));
-                        ((TextView)findViewById(R.id.numsolicita)).setText("Você possui "+a+" pedidos em aberto");
-
-                    }
-                    catch (Exception e)
-                    {
-                        Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
-                }
-            });
-
-            RequestParams req= new RequestParams();
-            req.add("servID","19");
-            req.add("id",myid);
-            HttpUtils.postByUrl(basesite + "application.php", req, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try{
-                        entregadoresDisponiveis = Integer.parseInt(new String(responseBody));
-                        ((TextView)findViewById(R.id.numsolicita2)).setText("Há "+entregadoresDisponiveis+" entregadores disponível no momento");
-
-                    }
-                    catch (Exception e)
-                    {
-                        Toast.makeText(getBaseContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(getBaseContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
-                }
-            });
+            getdispo();
         }
     }
+    void getdispo()
+    {
+        RequestParams rp= new RequestParams();
+        rp.add("servID","65");
+        rp.add("id",myid);
+
+        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try{
+                    int a = Integer.parseInt(new String(responseBody));
+                    ((TextView)findViewById(R.id.numsolicita)).setText("Você possui "+a+" pedidos em aberto");
+
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        RequestParams req= new RequestParams();
+        req.add("servID","19");
+        req.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", req, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try{
+                    entregadoresDisponiveis = Integer.parseInt(new String(responseBody));
+                    ((TextView)findViewById(R.id.numsolicita2)).setText("Há "+entregadoresDisponiveis+" entregadores disponível no momento");
+
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getBaseContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getBaseContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }
 
 

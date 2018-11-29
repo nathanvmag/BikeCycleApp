@@ -73,6 +73,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     ( (TextView)findViewById(R.id.bnvd)).setText("Bem vindo "+nome);
 
                     getState((BootstrapButton)findViewById(R.id.imworking));
+                    getdispo();
 
                     ((BootstrapButton)findViewById(R.id.imworking)).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -472,33 +473,38 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     @Override
     public void run() {
         if(inMain&&displayout.getVisibility()==View.VISIBLE){
-            RequestParams rp= new RequestParams();
-            rp.add("servID","54");
-            rp.add("id",myid);
-            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try{
-                        int a = Integer.parseInt(new String(responseBody));
-                        ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento");
-                        if(a>0)Aceitar.setEnabled(true);
-                        else Aceitar.setEnabled(false);
-
-                    }
-                    catch (Exception e)
-                    {
-                        Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
-                }
-            });
+            getdispo();
         }
         handler.postDelayed(this,5000);
+
+    }
+    void getdispo()
+    {
+        RequestParams rp= new RequestParams();
+        rp.add("servID","54");
+        rp.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try{
+                    int a = Integer.parseInt(new String(responseBody));
+                    ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento");
+                    if(a>0)Aceitar.setEnabled(true);
+                    else Aceitar.setEnabled(false);
+
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 }
