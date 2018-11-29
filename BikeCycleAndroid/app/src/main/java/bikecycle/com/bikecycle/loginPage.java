@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -18,19 +19,28 @@ import cz.msebera.android.httpclient.Header;
 
 public class loginPage extends AppCompatActivity {
     BootstrapButton cliente,entregador,entrar;
+    RelativeLayout loading,login;
     EditText loginTX,passTX;
     //1 entregador 0 cliente
     public int LoginType=1;
-    public static final String basesite="http://192.168.56.1/bikecycle/";
+    public static final String basesite="http://bikecycle.esy.es/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
+        setContentView(R.layout.activity_login_page);
+        loading= findViewById(R.id.loadinglogin);
+        login=findViewById(R.id.loginlay);
+        loading.setVisibility(View.INVISIBLE);
+        login.setVisibility(View.INVISIBLE);
+
         if(pm.contains("login")&&pm.contains("pass"))
         {
+            loading.setVisibility(View.VISIBLE);
             earlyLogin(pm.getString("login",""),pm.getString("pass",""),pm.getInt("tipe",0));
         }
-        setContentView(R.layout.activity_login_page);
+        loading.setVisibility(View.INVISIBLE);
+        login.setVisibility(View.VISIBLE);
 
         TypefaceProvider.registerDefaultIconSets();
         cliente= (BootstrapButton)findViewById(R.id.Cliente);

@@ -8,116 +8,135 @@
     tools:context=".loginPage">
 
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="81dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="35dp"
-        android:contentDescription="logoimage"
-        app:srcCompat="@drawable/logo"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="185dp" />
+    <RelativeLayout
+        android:id="@+id/loginlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-    <com.beardedhen.androidbootstrap.BootstrapEditText
-        android:id="@+id/emailadess"
-        android:layout_width="355dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="143dp"
-        android:hint="Digite seu e-mail"
-        android:inputType="textEmailAddress"
-        android:selectAllOnFocus="false"
-        android:textColor="@color/bootstrap_brand_success"
-        android:textColorLink="@color/bootstrap_brand_success"
-        android:typeface="normal"
-        app:bootstrapBrand="info"
-        app:bootstrapSize="xl"
-        app:roundedCorners="true" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="81dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="35dp"
+            android:contentDescription="logoimage"
+            app:srcCompat="@drawable/logo"
+            tools:layout_editor_absoluteX="139dp"
+            tools:layout_editor_absoluteY="185dp" />
 
-    <com.beardedhen.androidbootstrap.BootstrapEditText
-        android:id="@+id/pass"
-        android:layout_width="355dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="197dp"
-        android:hint="Digite sua senha"
-        android:inputType="textPassword|textWebPassword"
-        android:textColor="@color/bootstrap_brand_success"
-        android:textColorLink="@color/bootstrap_brand_success"
-        android:typeface="normal"
-        app:bootstrapBrand="info"
-        app:bootstrapSize="xl"
-        app:roundedCorners="true" />
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/esquepass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="70dp"
+            android:text="Esqueceu sua senha ?"
+            android:textStyle="bold"
+            app:bootstrapBrand="success" />
 
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/Cliente"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/entregabutton"
-        android:layout_marginEnd="21dp"
-        android:text="Cliente"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="xl"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="true" />
+        <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/pass"
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="197dp"
+            android:hint="Digite sua senha"
+            android:inputType="textPassword|textWebPassword"
+            android:textColor="@color/bootstrap_brand_success"
+            android:textColorLink="@color/bootstrap_brand_success"
+            android:typeface="normal"
+            app:bootstrapBrand="info"
+            app:bootstrapSize="xl"
+            app:roundedCorners="true" />
 
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/entregabutton"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="210dp"
-        android:layout_marginStart="22dp"
-        android:text="Entregador"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="xl"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="false" />
+        <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/emailadess"
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="143dp"
+            android:hint="Digite seu e-mail"
+            android:inputType="textEmailAddress"
+            android:selectAllOnFocus="false"
+            android:textColor="@color/bootstrap_brand_success"
+            android:textColorLink="@color/bootstrap_brand_success"
+            android:typeface="normal"
+            app:bootstrapBrand="info"
+            app:bootstrapSize="xl"
+            app:roundedCorners="true" />
 
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/entrarbt"
-        android:layout_width="131dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="130dp"
-        android:text="Entrar"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="lg"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="false" />
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/entrarbt"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="130dp"
+            android:text="Entrar"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="lg"
+            app:buttonMode="regular"
+            app:roundedCorners="true"
+            app:showOutline="false" />
 
-    <com.beardedhen.androidbootstrap.AwesomeTextView
-        android:id="@+id/primeoacess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="98dp"
-        android:text="Primeiro acesso? Registre-se aqu!?"
-        android:textStyle="bold"
-        app:bootstrapBrand="success"
-        />
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/primeoacess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="98dp"
+            android:text="Primeiro acesso? Registre-se aqu!?"
+            android:textStyle="bold"
+            app:bootstrapBrand="success" />
 
-    <com.beardedhen.androidbootstrap.AwesomeTextView
-        android:id="@+id/esquepass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp"
-        android:text="Esqueceu sua senha ?"
-        android:textStyle="bold"
-        app:bootstrapBrand="success"
-         />
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/Cliente"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/entregabutton"
+            android:layout_marginEnd="21dp"
+            android:text="Cliente"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="xl"
+            app:buttonMode="regular"
+            app:roundedCorners="true"
+            app:showOutline="true" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/entregabutton"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="210dp"
+            android:layout_marginStart="22dp"
+            android:text="Entregador"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="xl"
+            app:buttonMode="regular"
+            app:roundedCorners="true"
+            app:showOutline="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadinglogin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="120dp"
+
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/loading" />
+    </RelativeLayout>
 
 </RelativeLayout>
