@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +59,9 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
     private String myid,myfoto,nome;
     RelativeLayout mainlayout;
     Drawable clientlogo;
-    Boolean inMain=false;
+    Boolean inMain=false,inHistory= false
+            ;
+
     Integer entregadoresDisponiveis=0;
     private Handler handler;
 
@@ -68,8 +72,11 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             mainlayout.removeAllViews();
             inMain=false;
+            inHistory=false;
             switch (item.getItemId()) {
                 case R.id.navigation_home2:
+
+                    inHistory=false;
                     getLayoutInflater().inflate(R.layout.cliente_main,mainlayout,true);
                     ((TextView)findViewById(R.id.benvindclient)).setText("Bem vindo: "+nome);
                     new DownloadImageTask((ImageView) findViewById(R.id.clientlogo))
@@ -94,6 +101,25 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                         Toast.makeText(getBaseContext(),"Sucesso ao realizar pedido, aguarde por entregadores  ",Toast.LENGTH_LONG).show();
                                         else {
                                             utils.toast(view.getContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
+                                            RequestParams rps= new RequestParams();
+                                            rps.add("servID","887");
+                                            rps.add("title","Falta de entregadores ");
+                                            rps.add("mess","Foi solicitado entregadores para meus pedidos e no momento não tive nenhum entregador disponível");
+                                            rps.add("from","1");
+                                            rps.add("id",myid);
+                                            HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    utils.log("Resultado do pedido "+new String(responseBody));
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
+                                                        utils.log("Resultado do error  "+new String(responseBody)+" "+error);
+                                                    }
+                                            });
                                         }
                                     }
                                     else{
@@ -115,10 +141,14 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     //((ImageView)findViewById(R.id.clientlogo)).setImageDrawable(clientlogo==null?getResources().getDrawable(R.drawable.logo):clientlogo);
                     return true;
                 case R.id.navigation_dashboard2:
+
                     getLayoutInflater().inflate(R.layout.cliente_history,mainlayout,true);
                     final ListView lv= (ListView)findViewById(R.id.entregalist);
                     final List<Entrega> ents= new ArrayList<>();
-                    RequestParams rp= new RequestParams();
+                    inHistory=true;
+
+
+                            RequestParams rp= new RequestParams();
                     rp.add("servID","87");
                     rp.add("id",myid);
                     HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
@@ -145,6 +175,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 entregaAdpter adapter =
                                         new entregaAdpter(ents, getBaseContext());
                                 lv.setAdapter(adapter);
+
                                 lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                                     @Override
                                     public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
@@ -198,7 +229,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 });
                                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
                                         RequestParams rp =new RequestParams();
                                         final Entrega entreg= (Entrega) adapterView.getItemAtPosition(i);
                                         if(entreg.statusid!=0){
@@ -219,7 +250,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                 if(infs.length==4){
                                                 LayoutInflater inflater =getLayoutInflater();
                                                 //Inflate the view from a predefined XML layout
-                                                View layout = inflater.inflate(R.layout.cliente_entregador_info,
+                                                final View layout = inflater.inflate(R.layout.cliente_entregador_info,
                                                         (ViewGroup) findViewById(R.id.mainlayout));
                                                 // create a 300px width and 470px height PopupWindow
                                                 final PopupWindow pw =new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT,
@@ -238,6 +269,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     ((TextView)layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: "+entreg.starthora);
                                                     ((TextView)layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " +(infs[3].equals("")?"--:--": infs[3].replace("-",":")));
                                                     ((TextView)layout.findViewById(R.id.infostatus)).setText(entreg.status[entreg.statusid]);
+                                                    ((TextView)layout.findViewById(R.id.idview)).setText("#"+entreg.entregaid);
                                                     new DownloadImageTask((ImageView) layout.findViewById(R.id.infofoto))
                                                             .execute(loginPage.basesite+infs[2]);
                                                     BootstrapProgressBar progressBar= (BootstrapProgressBar)layout.findViewById(R.id.progbar2);
@@ -266,6 +298,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     chegoentrega.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View view) {
+                                                            if(!chegoentrega.isShowOutline()){
                                                             int netxstate= chegoentrega.isShowOutline()?1:2;
                                                             RequestParams requestParams= new RequestParams();
                                                             requestParams.add("servID","993");
@@ -291,36 +324,57 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                                                                 }
                                                             });
-                                                        }
+                                                        }}
                                                     });
                                                     finalizaPed.setOnClickListener(new View.OnClickListener() {
                                                         @Override
-                                                        public void onClick(View view) {
-                                                            RequestParams requestParams= new RequestParams();
-                                                            requestParams.add("servID","993");
-                                                            requestParams.add("entreid",entreg.entregaid+"");
-                                                            requestParams.add("state",((BootstrapButton)view).isShowOutline()?2+"": 3+"");
-                                                            utils.log("EAIII");
-                                                            HttpUtils.postByUrl(basesite + "application.php", requestParams, new AsyncHttpResponseHandler() {
+                                                        public void onClick(final View view) {
+                                                            if(!finalizaPed.isShowOutline()){
+                                                            final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                                            LayoutInflater lt = getLayoutInflater();
+                                                            final View ratingalert=lt.inflate(R.layout.avaliesuacorrida, mainlayout,false);
+                                                            builder.setView(ratingalert);
+
+                                                            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                                 @Override
-                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                                    String resp= new String(responseBody);
-                                                                    if(resp.equals("OK"))
-                                                                    {
-                                                                        pw.dismiss();
-                                                                        findViewById(R.id.navigation_dashboard2).callOnClick();
-                                                                    }
-                                                                    else  Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                                    RequestParams requestParams= new RequestParams();
+                                                                    requestParams.add("servID","993");
+                                                                    requestParams.add("entreid",entreg.entregaid+"");
+                                                                    requestParams.add("nota",((RatingBar)ratingalert.findViewById(R.id.ratingBar)).getRating()+"");
+                                                                    requestParams.add("state",((BootstrapButton)view).isShowOutline()?2+"": 3+"");
+                                                                    utils.log("EAIII");
+                                                                    HttpUtils.postByUrl(basesite + "application.php", requestParams, new AsyncHttpResponseHandler() {
+                                                                        @Override
+                                                                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                            String resp= new String(responseBody);
+                                                                            if(resp.equals("OK"))
+                                                                            {
+                                                                                pw.dismiss();
+                                                                                findViewById(R.id.navigation_dashboard2).callOnClick();
+                                                                            }
+                                                                            else  Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
 
-                                                                }
+                                                                        }
 
-                                                                @Override
-                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                    Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                        @Override
+                                                                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                            Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
 
+                                                                        }
+                                                                    });
                                                                 }
                                                             });
-                                                        }
+                                                            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                                    utils.toast(view.getContext(),"Por favor preencha a avaliação para finalizar o pedido");
+                                                                }
+                                                            });
+                                                            builder.create().show();
+
+
+                                                        }}
                                                     });
                                                 }
                                             else{
@@ -331,7 +385,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                                             @Override
                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                Toast.makeText(getBaseContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                Toast.makeText(view.getContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
                                             }
                                         });
 
@@ -340,7 +394,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                                     }
                                         else{
-                                            Toast.makeText(getBaseContext(),"Este pedido não possui entregador ainda",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(view.getContext(),"Este pedido não possui entregador ainda",Toast.LENGTH_LONG).show();
                                         }
                                     }
 
@@ -376,6 +430,9 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                             startActivity(new Intent(getBaseContext(),loginPage.class));
                         }
                     });
+                    inHistory=false;
+                    inMain=false;
+
                     v.findViewById(R.id.altsenha).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -452,9 +509,20 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
     @Override
     public void run() {
-        handler.postDelayed(this,10000);
         if(inMain){
             getdispo();
+            handler.postDelayed(this,10000);
+
+        }
+        else if(inHistory){
+            findViewById(R.id.navigation_dashboard2).callOnClick();
+            handler.postDelayed(this,60000);
+
+
+        }
+        else{
+            handler.postDelayed(this,10000);
+
         }
     }
     void getdispo()

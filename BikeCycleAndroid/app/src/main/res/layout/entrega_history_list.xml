@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:padding="5dp">
+    android:padding="10dp">
 
     <com.beardedhen.androidbootstrap.BootstrapLabel
         android:id="@+id/statustx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/horast"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:text="Aceito, aguarde o entregador"
         app:bootstrapBrand="secondary"
         app:bootstrapHeading="h5"
@@ -23,7 +23,6 @@
         android:layout_height="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="11dp"
         app:animated="false"
         app:bootstrapBrand="warning"
         app:bootstrapMaxProgress="4"
@@ -36,8 +35,8 @@
         android:id="@+id/datast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/progbar"
-        android:layout_alignTop="@+id/statustx"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:text="20/04/2018" />
 
     <TextView
@@ -47,6 +46,14 @@
         android:layout_alignEnd="@+id/progbar"
         android:layout_centerVertical="true"
         android:text="20:30" />
+
+    <TextView
+        android:id="@+id/pednum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="#33" />
 
 
 </RelativeLayout>

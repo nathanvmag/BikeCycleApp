@@ -1,0 +1,15 @@
+mudar ordem complemento bairro estado e cep   ////
+trocar o termo cliente por ???
+notificacao por push
+confirmar se vai trabalhar
+tempo disponível e indisponivel
+adicionar loja, base e area 
+adicionar indentificador aos pedidos
+mensagens quando esta sem entregadores
+toda a área de históricos
+adicionar horario finalizar entrega no ultimas
+atualizar constante o históricos//
+adicionar limite de pedidos ao entregador//
+
+
+

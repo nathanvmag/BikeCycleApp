@@ -51,8 +51,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     private String myid,myfoto,nome;
     BootstrapButton Aceitar;
     private Handler handler;
-    boolean inMain=false;
-
+    boolean inMain=false,inHistory=false;
+    int PedidosAtivos=0;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -62,6 +62,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     inMain=true;
+                    inHistory=false;
                     getLayoutInflater().inflate(R.layout.entrega_main,mainlayout,true);
                     indisplayout=findViewById(R.id.indsplay);
                     displayout= findViewById(R.id.display);
@@ -89,6 +90,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             rp.add("servID","742");
                             rp.add("id",myid);
                             view.setEnabled(false);
+                            if(PedidosAtivos<3){
 
                             HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
                                 @Override
@@ -118,11 +120,15 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                                 }
                             });
+                        }else{
+                                utils.toast(view.getContext(),"Você já possui 3 pedidos em andamento, finalize-os primeiro");
+                            }
                         }
                     });
                     return true;
                 case R.id.navigation_dashboard:
                     inMain=false;
+                    inHistory=true;
                     getLayoutInflater().inflate(R.layout.cliente_history,mainlayout,true);
                     final ListView lv= (ListView)findViewById(R.id.entregalist);
                     final List<Entrega> entregas= new ArrayList<>();
@@ -197,6 +203,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         ((TextView)layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: "+entreg.starthora);
                                                         ((TextView)layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " +(infs[3].equals("")?"--:--": infs[3].replace("-",":")));
                                                         ((TextView)layout.findViewById(R.id.infostatus)).setText(entreg.status[entreg.statusid]);
+                                                        ((TextView)layout.findViewById(R.id.idview)).setText("#"+entreg.entregaid);
+
                                                         try{
                                                             infs[4]= infs[4].replace("?","%");
                                                            String[]ends= infs[4].split("%",6);
@@ -255,6 +263,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     return true;
                 case R.id.navigation_notifications:
                     inMain=false;
+                    inHistory=false;
 
                     getLayoutInflater().inflate(R.layout.entrega_configs,mainlayout,true);
                     findViewById(R.id.saibot).setOnClickListener(new View.OnClickListener() {
@@ -474,10 +483,19 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     public void run() {
         if(inMain&&displayout.getVisibility()==View.VISIBLE){
             getdispo();
+            handler.postDelayed(this,5000);
+
         }
+        else if (inHistory&&displayout.getVisibility()==View.VISIBLE)
+        {
+            findViewById(R.id.navigation_dashboard).callOnClick();
+            handler.postDelayed(this,90000);
+
+        }
+        else{
         handler.postDelayed(this,5000);
 
-    }
+    }}
     void getdispo()
     {
         RequestParams rp= new RequestParams();
@@ -505,6 +523,25 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                 Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
             }
         });
+        RequestParams rps= new RequestParams();
+        rps.add("servID","775");
+        rps.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try{
+                    PedidosAtivos= Integer.parseInt(new String(responseBody));
+                }
+                catch (Exception e)
+                {
 
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 }

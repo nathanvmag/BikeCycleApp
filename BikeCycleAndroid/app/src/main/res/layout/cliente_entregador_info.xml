@@ -79,8 +79,8 @@
                 android:id="@+id/infoname"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/infotel"
+                android:layout_below="@+id/idview"
+                android:layout_toEndOf="@+id/saiuent"
                 android:gravity="center"
                 android:text="Sem entregador"
                 android:textSize="20sp"
@@ -143,6 +143,15 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:bootstrapBrand="success" />
+
+            <TextView
+                android:id="@+id/idview"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/finalizaped"
+                android:layout_alignParentTop="true"
+                android:text="#id" />
+
 
         </RelativeLayout>
     </com.beardedhen.androidbootstrap.BootstrapWell>

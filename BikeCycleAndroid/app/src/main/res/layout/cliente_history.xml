@@ -6,23 +6,24 @@
     android:layout_height="match_parent"
     android:background="@color/bikefundo">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
-        android:text="Não há nenhuma entrega a ser mostrada"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="132dp"
+            android:text="Não há nenhuma entrega a ser mostrada"
+            android:textSize="18sp" />
 
-    <ListView
-        android:id="@+id/entregalist"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" >
+        <ListView
+            android:id="@+id/entregalist"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
 
-    </ListView>
+        </ListView>
+
 
 </RelativeLayout>
