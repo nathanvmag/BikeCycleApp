@@ -3,16 +3,15 @@ package bikecycle.com.bikecycle;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.ImageView;
 
 import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
 
 import java.io.InputStream;
 
-public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView bmImage;
+public class DownloadImageTask2 extends AsyncTask<String, Void, Bitmap> {
+    BootstrapCircleThumbnail bmImage;
 
-    public DownloadImageTask(ImageView bmImage) {
+    public DownloadImageTask2(BootstrapCircleThumbnail bmImage) {
         this.bmImage = bmImage;
     }
 

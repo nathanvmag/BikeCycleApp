@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AvaliarApp">
+
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/reclamabody2"
+        android:layout_width="340dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:gravity="top"
+        android:hint="Caso queira, deixe sua opnião"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        android:singleLine="false"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="md"
+        app:roundedCorners="true" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/awesomeTextView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="top|center"
+        android:textSize="25dp"
+        app:bootstrapBrand="success"
+        app:bootstrapText="Como você se sente em relação ao App Bikes Cycle:" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/awesomeTextView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/envia2"
+        android:layout_marginTop="-145dp"
+        android:gravity="top|center"
+        android:textSize="14dp"
+        app:bootstrapBrand="success"
+        app:bootstrapText="Dê sua opnião pública na Google Play" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/envia2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="145dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="20dp"
+        android:text="Enviar "
+        app:bootstrapBrand="success" />
+
+    <RatingBar
+        android:id="@+id/nota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/awesomeTextView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dp"
+        android:numStars="5"
+        android:paddingBottom="30dp"
+        android:paddingTop="20dp"
+        android:rating="5"
+        android:stepSize="0.5" />
+</RelativeLayout>

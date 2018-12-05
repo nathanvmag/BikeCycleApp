@@ -47,10 +47,11 @@
                 app:roundedCorners="true"
                 app:showOutline="false" />
 
-            <ImageView
+            <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
                 android:id="@+id/infofoto"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                app:bootstrapBrand="success"
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
             <com.beardedhen.androidbootstrap.AwesomeTextView

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".contatarSuporte">
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/nosencontre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/envia"
+        android:gravity="top|center"
+        android:paddingTop="10dp"
+        android:textSize="25dp"
+        app:bootstrapBrand="success"
+        app:bootstrapText="Redes Sociais:" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/awesomeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|center"
+        android:textSize="25dp"
+        app:bootstrapBrand="success"
+        app:bootstrapText="Contatar suporte" />
+
+    <RelativeLayout
+        android:id="@+id/textvies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="42dp">
+
+        <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/reclamabody"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="top"
+            android:hint="Mensagem a ser enviada"
+            android:inputType="textMultiLine"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="md"
+            app:roundedCorners="true" />
+
+    </RelativeLayout>
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/envia"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textvies"
+        android:layout_centerHorizontal="true"
+        android:text="Enviar "
+        app:bootstrapBrand="success" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/nosencontre"
+        android:gravity="center_vertical|center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/fb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/facebook"
+            />
+
+        <ImageView
+            android:id="@+id/wpp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:src="@drawable/whatsapp" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

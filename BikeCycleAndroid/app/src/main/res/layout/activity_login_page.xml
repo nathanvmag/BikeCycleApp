@@ -27,13 +27,24 @@
             tools:layout_editor_absoluteY="185dp" />
 
         <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/ajuda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="43dp"
+            android:text="Precisa de ajuda?"
+            android:textStyle="bold"
+            app:bootstrapBrand="success" />
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
             android:id="@+id/esquepass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="70dp"
-            android:text="Esqueceu sua senha ?"
+            android:text="Esqueceu sua senha?"
             android:textStyle="bold"
             app:bootstrapBrand="success" />
 
@@ -49,7 +60,7 @@
             android:textColor="@color/bootstrap_brand_success"
             android:textColorLink="@color/bootstrap_brand_success"
             android:typeface="normal"
-            app:bootstrapBrand="info"
+            app:bootstrapBrand="success"
             app:bootstrapSize="xl"
             app:roundedCorners="true" />
 
@@ -66,7 +77,7 @@
             android:textColor="@color/bootstrap_brand_success"
             android:textColorLink="@color/bootstrap_brand_success"
             android:typeface="normal"
-            app:bootstrapBrand="info"
+            app:bootstrapBrand="success"
             app:bootstrapSize="xl"
             app:roundedCorners="true" />
 
@@ -91,7 +102,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="98dp"
-            android:text="Primeiro acesso? Registre-se aqu!?"
+            android:text="Primeiro acesso? Registre-se aqu!"
             android:textStyle="bold"
             app:bootstrapBrand="success" />
 

@@ -65,6 +65,13 @@ public class loginPage extends AppCompatActivity {
                 startActivity(new Intent(view.getContext(),esquepass.class));
             }
         });
+        findViewById(R.id.ajuda).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(basesite+"ajuda.html")));
+
+            }
+        });
         cliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +95,7 @@ public class loginPage extends AppCompatActivity {
                 doLogin(view);
             }
         });
+        loginTX.requestFocus();
 
     }
     @Override

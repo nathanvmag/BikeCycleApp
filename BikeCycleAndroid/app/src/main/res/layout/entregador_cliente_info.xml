@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
     app:barrierAllowsGoneWidgets="true">
 
     <com.beardedhen.androidbootstrap.BootstrapWell
@@ -11,18 +12,20 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
-        android:animateLayoutChanges="false"
+        android:animateLayoutChanges="true"
         android:animationCache="true"
+        android:background="@color/bootstrap_brand_secondary_border"
         app:bootstrapSize="xl">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
                 android:id="@+id/infofoto"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                app:bootstrapBrand="success"
                 app:srcCompat="@mipmap/ic_launcher_round" />
 
             <com.beardedhen.androidbootstrap.AwesomeTextView
@@ -41,8 +44,8 @@
                 android:id="@+id/infodata"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/horater2"
                 android:layout_alignParentStart="true"
+                android:layout_below="@+id/infonum2"
                 android:text="Data :"
                 android:textSize="18sp" />
 
@@ -91,8 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="221dp"
+                android:layout_below="@+id/infonum5"
                 android:text="Complemento: "
                 android:textSize="18sp" />
 
@@ -100,9 +102,8 @@
                 android:id="@+id/infonum3"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/infonum4"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="-221dp"
+                android:layout_below="@+id/inforua"
                 android:text="Nùmero: "
                 android:textSize="18sp" />
 
@@ -129,9 +130,8 @@
                 android:id="@+id/horaini"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="137dp"
+                android:layout_below="@+id/horater2"
                 android:text="Pedido finalizado às: --:--"
                 android:textSize="18sp" />
 
@@ -139,9 +139,8 @@
                 android:id="@+id/infostatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="96dp"
+                android:layout_below="@+id/horaini"
                 android:text="aguarando entregadr"
                 android:textSize="18sp" />
 
@@ -149,9 +148,8 @@
                 android:id="@+id/horater2"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="162dp"
+                android:layout_below="@+id/infodata"
                 android:text="Pedido iniciado às: "
                 android:textSize="18sp" />
 
@@ -159,9 +157,8 @@
                 android:id="@+id/progbar2"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="67dp"
+                android:layout_below="@+id/infostatus"
                 app:animated="false"
                 app:bootstrapBrand="warning"
                 app:bootstrapMaxProgress="4"
@@ -171,12 +168,25 @@
                 app:striped="true" />
 
             <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/reporterror"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dimissinfo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-104dp"
+                android:text="Reportar um problema"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:bootstrapBrand="danger" />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
                 android:id="@+id/dimissinfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="27dp"
+                android:layout_marginBottom="104dp"
                 android:text="Fechar"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -186,7 +196,7 @@
                 android:id="@+id/idview"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/infotel"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:gravity="end"
                 android:text="#id" />

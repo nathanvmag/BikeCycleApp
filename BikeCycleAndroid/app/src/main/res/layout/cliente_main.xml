@@ -51,13 +51,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
         android:id="@+id/clientlogo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
+        app:bootstrapBrand="success"
         app:srcCompat="@mipmap/ic_launcher" />
 
 

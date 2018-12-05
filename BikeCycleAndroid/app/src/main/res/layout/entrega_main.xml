@@ -27,8 +27,8 @@
         android:id="@+id/display"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:visibility="visible">
 
         <TextView
@@ -45,12 +45,15 @@
 
         <TextView
             android:id="@+id/bnvd"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/dispotext"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="71dp"
-            android:text="Bem vindo:"
+            android:layout_marginTop="21dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="Olá Nathan  magalhaes vieira"
+            android:textSize="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,26 +71,28 @@
             app:roundedCorners="true"
             app:showOutline="false" />
 
-        <pl.droidsonroids.gif.GifImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="116dp"
-            android:src="@drawable/search" />
+        <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
+            android:id="@+id/entregafoto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/bnvd"
+            android:layout_marginStart="14dp"
+            android:src="@mipmap/ic_launcher_round"
+            app:bootstrapBrand="success" />
     </RelativeLayout>
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/imworking"
-        android:layout_width="135dp"
-        android:layout_height="wrap_content"
+        android:layout_width="106dp"
+        android:layout_height="28dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="13dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginTop="64dp"
         android:text="Disponível"
         app:bootstrapBrand="success"
-        app:bootstrapSize="lg"
+        app:bootstrapSize="md"
         app:buttonMode="regular"
         app:roundedCorners="true"
         app:showOutline="false" />

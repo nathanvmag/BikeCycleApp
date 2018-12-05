@@ -3,6 +3,18 @@
     package="bikecycle.com.bikecycle">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/email" />
+    <!--
+         Set color used with incoming notification messages. This is used when no color is set for the incoming
+         notification message. See README(https://goo.gl/6BKBk7) for more.
+    -->
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
 
     <application
         android:allowBackup="true"
@@ -10,9 +22,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".loginPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +45,9 @@
         <activity android:name=".altersenha" />
         <activity
             android:name=".ClienteLayout"
-            android:label="@string/title_activity_cliente_layout"></activity>
+            android:label="@string/title_activity_cliente_layout" />
+        <activity android:name=".contatarSuporte" />
+        <activity android:name=".AvaliarApp"></activity>
     </application>
 
 </manifest>

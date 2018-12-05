@@ -23,15 +23,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.beardedhen.androidbootstrap.BootstrapProgressBar;
 import com.beardedhen.androidbootstrap.api.attributes.BootstrapBrand;
 import com.beardedhen.androidbootstrap.api.defaults.DefaultBootstrapBrand;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -71,7 +77,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     Aceitar= findViewById(R.id.aceitarent);
                     Aceitar.setEnabled(false);
 
-                    ( (TextView)findViewById(R.id.bnvd)).setText("Bem vindo "+nome);
+                    ( (TextView)findViewById(R.id.bnvd)).setText("Olá, "+nome);
+                    new DownloadImageTask2((BootstrapCircleThumbnail)findViewById(R.id.entregafoto)).execute(basesite+myfoto);
 
                     getState((BootstrapButton)findViewById(R.id.imworking));
                     getdispo();
@@ -86,43 +93,62 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     Aceitar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
-                            RequestParams rp = new RequestParams();
-                            rp.add("servID","742");
-                            rp.add("id",myid);
-                            view.setEnabled(false);
-                            if(PedidosAtivos<3){
-
-                            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                    String resp=new String(responseBody);
-                                    utils.log(resp);
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which){
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            RequestParams rp = new RequestParams();
+                                            rp.add("servID","742");
+                                            rp.add("id",myid);
+                                            view.setEnabled(false);
+                                            if(PedidosAtivos<3){
 
-                                    view.setEnabled(true);
-                                    if (resp.equals("OK"))
-                                    {
-                                        findViewById(R.id.navigation_dashboard).callOnClick();
-                                        utils.log("Sucesso ao receber o pedido, cliquei nele para mais informações");
+                                                HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                    @Override
+                                                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                        String resp=new String(responseBody);
+                                                        utils.log(resp);
+
+                                                        view.setEnabled(true);
+                                                        if (resp.equals("OK"))
+                                                        {
+                                                            findViewById(R.id.navigation_dashboard).callOnClick();
+                                                            utils.log("Sucesso ao receber o pedido, cliquei nele para mais informações");
+                                                        }
+                                                        else {
+                                                            utils.toast(getBaseContext(),"Falha ao aceitar pedido "+resp);
+
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                        view.setEnabled(false);
+                                                        String resp=new String(responseBody);
+                                                        utils.log(resp);
+                                                        utils.toast(getBaseContext(),"Falha ao aceitar pedido "+resp);
+
+                                                    }
+                                                });
+                                            }else{
+                                                utils.toast(view.getContext(),"Você já possui 3 pedidos em andamento, finalize-os primeiro");
+                                            }
+                                            break;
+
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            //No button clicked
+                                            break;
                                     }
-                                    else {
-                                        utils.toast(getBaseContext(),"Falha ao aceitar pedido "+resp);
-
-                                    }
-
                                 }
+                            };
 
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                    view.setEnabled(false);
-                                    String resp=new String(responseBody);
-                                    utils.log(resp);
-                                    utils.toast(getBaseContext(),"Falha ao aceitar pedido "+resp);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            builder.setMessage("Tem certeza que deseja aceitar ?").setPositiveButton("Sim", dialogClickListener)
+                                    .setNegativeButton("Não", dialogClickListener).show();
 
-                                }
-                            });
-                        }else{
-                                utils.toast(view.getContext(),"Você já possui 3 pedidos em andamento, finalize-os primeiro");
-                            }
+
                         }
                     });
                     return true;
@@ -146,12 +172,10 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 {
                                     String[] infs= modules[i].split("!");
                                     Entrega e = new Entrega(infs[1],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),1);
-                                    utils.log("EAII NOVO "+i);
                                     entregas.add(e);
                                     findViewById(R.id.textView2).setVisibility(View.INVISIBLE);
 
                                 }
-                                utils.log("SAIU  LOOP ");
 
                                 entregaAdpter adapter =
                                         new entregaAdpter(entregas, getBaseContext());
@@ -220,7 +244,60 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         {
 
                                                         }
-                                                        new DownloadImageTask((ImageView) layout.findViewById(R.id.infofoto))
+                                                        if(entreg.statusid==1||entreg.statusid==2)
+                                                        {
+                                                            layout.findViewById(R.id.reporterror).setVisibility(View.VISIBLE);
+                                                            layout.findViewById(R.id.reporterror).setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View view) {
+                                                                    final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                                                    LayoutInflater lt = getLayoutInflater();
+                                                                    final View ratingalert=lt.inflate(R.layout.reporterror, mainlayout,false);
+                                                                    builder.setView(ratingalert);
+
+                                                                    builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                                            RequestParams rps = new RequestParams();
+                                                                            rps.add("servID","887");
+                                                                            rps.add("id",myid);
+                                                                            rps.add("title","Reportar um problema -"+((BootstrapEditText)ratingalert.findViewById(R.id.reclamatitle)).getText().toString());
+                                                                            rps.add("mess",((BootstrapEditText)ratingalert.findViewById(R.id.reclamabody)).getText().toString());
+                                                                            rps.add("from","0");
+                                                                            HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+                                                                                @Override
+                                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                                    String res= new String(responseBody);
+                                                                                    if (res.equals("OK"))
+                                                                                    {
+                                                                                        utils.toast(getBaseContext(),"Sucesso ao reportar o problema ");
+
+                                                                                    }
+                                                                                    else{
+                                                                                        utils.toast(getBaseContext(),"Falha ao reportar o problema "+ new String(responseBody));
+
+                                                                                    }
+                                                                                }
+
+                                                                                @Override
+                                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                                    utils.toast(getBaseContext(),"Falha ao reportar o problema "+ new String(responseBody));
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                                        }
+                                                                    });
+                                                                    builder.setTitle("Reportar um problema");
+                                                                    builder.create().show();
+
+                                                                }
+                                                            });
+                                                        }
+                                                        new DownloadImageTask2((BootstrapCircleThumbnail) layout.findViewById(R.id.infofoto))
                                                                 .execute(loginPage.basesite+infs[2]);
                                                         BootstrapProgressBar progressBar= (BootstrapProgressBar)layout.findViewById(R.id.progbar2);
                                                         progressBar.setProgress(entreg.statusid+1);
@@ -269,6 +346,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     findViewById(R.id.saibot).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            sendRegistrationToServer("");
                             SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
                             SharedPreferences.Editor editor= pm.edit();
                             editor.clear();
@@ -283,6 +361,31 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","1");
                             startActivity(intent);
+                        }
+                    });
+                    findViewById(R.id.contatSup).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent= new Intent(view.getContext(),contatarSuporte.class);
+                            intent.putExtra("id",myid);
+                            intent.putExtra("tipe","0");
+                            startActivity(intent);
+                        }
+                    });
+                    findViewById(R.id.avaliaapp).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent= new Intent(view.getContext(),AvaliarApp.class);
+                            intent.putExtra("id",myid);
+                            intent.putExtra("tipe","0");
+                            startActivity(intent);
+                        }
+                    });
+                    findViewById(R.id.ajuda).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(basesite+"ajuda.html")));
+
                         }
                     });
                     findViewById(R.id.altcad).setOnClickListener(new View.OnClickListener() {
@@ -350,6 +453,16 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
             editor.putString("pass",extras.getString("pass",""));
             editor.putInt("tipe",1);
             editor.commit();
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    String deviceToken = instanceIdResult.getToken();
+                    // Do whatever you want with your token now
+                    // i.e. store it on SharedPreferences or DB
+                    // or directly send it to server
+                    sendRegistrationToServer(deviceToken);
+                }
+            });
         }
         findViewById(R.id.navigation_home).callOnClick();
     }
@@ -541,6 +654,26 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
+            }
+        });
+    }
+
+
+    private void sendRegistrationToServer(String token) {
+        utils.log("minha toke "+token);
+        RequestParams rp = new RequestParams();
+        rp.add("servID","333");
+        rp.add("token",token);
+        rp.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                utils.log("Sucesso com a token nova "+new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.log("Falha com a token nova"+new String(responseBody));
             }
         });
     }
