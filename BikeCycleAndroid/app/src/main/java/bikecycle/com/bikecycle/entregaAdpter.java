@@ -43,7 +43,7 @@ public class entregaAdpter extends BaseAdapter {
         ((BootstrapLabel)v.findViewById(R.id.statustx)).setText(ent.status[ent.statusid]);
         ((TextView)v.findViewById(R.id.datast)).setText(ent.dataa);
         ((TextView)v.findViewById(R.id.horast)).setText(ent.starthora);
-        ((TextView)v.findViewById(R.id.pednum)).setText("#"+ent.entregaid);
+        ((TextView)v.findViewById(R.id.pednum)).setText("#"+ent.entregaid+(ent.alocada.equals("0")?"":" - Alocada"));
         BootstrapProgressBar progressBar= (BootstrapProgressBar)v.findViewById(R.id.progbar);
         progressBar.setProgress(ent.statusid+1);
         if(ent.statusid==0)progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);

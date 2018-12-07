@@ -2,10 +2,10 @@ package bikecycle.com.bikecycle;
 
 public class Entrega {
     public String[] status;
-    public String entregaID,dataa,starthora,empresaID;
+    public String entregaID,dataa,starthora,empresaID,alocada;
     public int statusid=0,entregaid;
 
-    public Entrega(String entreid,String dt,String hr,int st,int entid,int md)
+    public Entrega(String entreid,String dt,String hr,int st,int entid,int md,String alo)
     {
         entregaID=entreid;
         dataa=fixdate(dt);
@@ -13,6 +13,7 @@ public class Entrega {
         statusid=st;
         entregaid=entid;
         empresaID=entregaID;
+        alocada= alo;
         if(md==0)
         {
             status= new String[]{"Procurando Entregador","Aceito, aguarde o entregador","Enviado para entrega","Pedido finalizado"};

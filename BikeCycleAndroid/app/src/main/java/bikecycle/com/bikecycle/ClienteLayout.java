@@ -83,6 +83,80 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     new DownloadImageTask2((BootstrapCircleThumbnail) findViewById(R.id.clientlogo))
                             .execute(loginPage.basesite+myfoto);
                     getdispo();
+                    findViewById(R.id.solicitaalocado).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which){
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            //Yes button clicked
+                                            RequestParams rp = new RequestParams();
+                                            rp.add("servID","77");
+                                            rp.add("id",myid);
+                                            view.setEnabled(false);
+                                            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    view.setEnabled(true);
+                                                    String resp =new String(responseBody);
+                                                    if(resp.equals("OK"))
+                                                    {
+                                                        findViewById(R.id.navigation_dashboard2).callOnClick();
+                                                        if(entregadoresDisponiveis>0)
+                                                            Toast.makeText(getBaseContext(),"Sucesso ao realizar pedido, aguarde por entregadores alocados ",Toast.LENGTH_LONG).show();
+                                                        else {
+                                                            utils.toast(view.getContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
+                                                            RequestParams rps= new RequestParams();
+                                                            rps.add("servID","887");
+                                                            rps.add("title","Falta de entregadores ");
+                                                            rps.add("mess","Foi solicitado entregadores alocados para meus pedidos e no momento não tive nenhum entregador disponível");
+                                                            rps.add("from","1");
+                                                            rps.add("id",myid);
+                                                            HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+                                                                @Override
+                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                    utils.log("Resultado do pedido "+new String(responseBody));
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
+                                                                    utils.log("Resultado do error  "+new String(responseBody)+" "+error);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                    else{
+                                                        Toast.makeText(getBaseContext(),"Falha ao solicitar entregador alocado "+resp,Toast.LENGTH_LONG).show();
+
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                    view.setEnabled(true);
+                                                    Toast.makeText(getBaseContext(),"Falha ao solicitar entregador" +new String(responseBody),Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                            break;
+
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            //No button clicked
+                                            break;
+                                    }
+                                }
+                            };
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            builder.setMessage("Você tem certeza que deseja solicitar um entregador alocado?").setPositiveButton("Sim", dialogClickListener)
+                                    .setNegativeButton("Não", dialogClickListener).create().show();
+
+
+                        }
+                    });
                     findViewById(R.id.solicita).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
@@ -186,7 +260,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 for(int i=0;i<modules.length;i++)
                                 {
                                     String[] infs= modules[i].split("!");
-                                    Entrega e = new Entrega(infs[2],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),0);
+                                    Entrega e = new Entrega(infs[2],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),0,infs[6]);
                                     ents.add(e);
                                     tx.setVisibility(View.INVISIBLE);
 
@@ -575,8 +649,37 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
         }
     }
+
+
     void getdispo()
     {
+        RequestParams requestParams= new RequestParams();
+        requestParams.add("servID","7783");
+        requestParams.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String resp= new String(responseBody);
+                try{
+                    int response = Integer.parseInt(resp);
+                    if(response>0)
+                        findViewById(R.id.solicitaalocado).setVisibility(View.VISIBLE);
+                    else findViewById(R.id.solicitaalocado).setVisibility(View.INVISIBLE);
+
+                }
+                catch (Exception e)
+                {
+                    utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+            }
+        });
+
         RequestParams rp= new RequestParams();
         rp.add("servID","65");
         rp.add("id",myid);

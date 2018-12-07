@@ -41,7 +41,10 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -90,6 +93,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             setWorkstate(bt.isShowOutline()?1:0,bt);
                         }
                     });
+                    checkTrab();
                     Aceitar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
@@ -98,43 +102,67 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 public void onClick(DialogInterface dialog, int which) {
                                     switch (which){
                                         case DialogInterface.BUTTON_POSITIVE:
-                                            RequestParams rp = new RequestParams();
-                                            rp.add("servID","742");
-                                            rp.add("id",myid);
-                                            view.setEnabled(false);
-                                            if(PedidosAtivos<3){
+                                            RequestParams ques= new RequestParams();
+                                            ques.add("servID","7740");
+                                            ques.add("id",myid);
+                                            HttpUtils.postByUrl(basesite + "application.php", ques, new AsyncHttpResponseHandler() {
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    String resp = new String(responseBody);
+                                                    try {
+                                                        int rps = Integer.parseInt(resp);
+                                                        RequestParams rp = new RequestParams();
+                                                        if (rps > 0) {
+                                                            rp.add("servID", "743");
 
-                                                HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
-                                                    @Override
-                                                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                        String resp=new String(responseBody);
-                                                        utils.log(resp);
-
-                                                        view.setEnabled(true);
-                                                        if (resp.equals("OK"))
-                                                        {
-                                                            findViewById(R.id.navigation_dashboard).callOnClick();
-                                                            utils.log("Sucesso ao receber o pedido, cliquei nele para mais informações");
+                                                        } else {
+                                                            rp.add("servID", "742");
                                                         }
-                                                        else {
-                                                            utils.toast(getBaseContext(),"Falha ao aceitar pedido "+resp);
+                                                            rp.add("id", myid);
+                                                            view.setEnabled(false);
+                                                            if (PedidosAtivos < 3) {
 
-                                                        }
+                                                                HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                                    @Override
+                                                                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                        String resp = new String(responseBody);
+                                                                        utils.log(resp);
+
+                                                                        view.setEnabled(true);
+                                                                        if (resp.equals("OK")) {
+                                                                            findViewById(R.id.navigation_dashboard).callOnClick();
+                                                                            utils.log("Sucesso ao receber o pedido, cliquei nele para mais informações");
+                                                                        } else {
+                                                                            utils.toast(getBaseContext(), "Falha ao aceitar pedido " + resp);
+
+                                                                        }
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                        view.setEnabled(false);
+                                                                        String resp = new String(responseBody);
+                                                                        utils.log(resp);
+                                                                        utils.toast(getBaseContext(), "Falha ao aceitar pedido " + resp);
+
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                utils.toast(view.getContext(), "Você já possui 3 pedidos em andamento, finalize-os primeiro");
+                                                            }
+
+                                                    } catch (Exception e) {
+                                                        utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
 
                                                     }
+                                                }
 
-                                                    @Override
-                                                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                        view.setEnabled(false);
-                                                        String resp=new String(responseBody);
-                                                        utils.log(resp);
-                                                        utils.toast(getBaseContext(),"Falha ao aceitar pedido "+resp);
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                                                    }
-                                                });
-                                            }else{
-                                                utils.toast(view.getContext(),"Você já possui 3 pedidos em andamento, finalize-os primeiro");
-                                            }
+                                                }});
+
                                             break;
 
                                         case DialogInterface.BUTTON_NEGATIVE:
@@ -171,7 +199,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 for(int i=0;i<modules.length;i++)
                                 {
                                     String[] infs= modules[i].split("!");
-                                    Entrega e = new Entrega(infs[1],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),1);
+                                    Entrega e = new Entrega(infs[1],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),1,infs[6]);
                                     entregas.add(e);
                                     findViewById(R.id.textView2).setVisibility(View.INVISIBLE);
 
@@ -595,6 +623,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     @Override
     public void run() {
         if(inMain&&displayout.getVisibility()==View.VISIBLE){
+
             getdispo();
             handler.postDelayed(this,5000);
 
@@ -611,31 +640,86 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     }}
     void getdispo()
     {
-        RequestParams rp= new RequestParams();
-        rp.add("servID","54");
-        rp.add("id",myid);
-        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+        RequestParams ques= new RequestParams();
+        ques.add("servID","7740");
+        ques.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", ques, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String resp = new String(responseBody);
                 try{
-                    int a = Integer.parseInt(new String(responseBody));
-                    ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento");
-                    if(a>0)Aceitar.setEnabled(true);
-                    else Aceitar.setEnabled(false);
+                    int rps= Integer.parseInt(resp);
+                    if(rps>0)
+                    {
+                        RequestParams rp= new RequestParams();
+                        rp.add("servID","55");
+                        rp.add("id",myid);
+                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                try{
+                                    int a = Integer.parseInt(new String(responseBody));
+                                    ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento (alocado)");
+                                    if(a>0)Aceitar.setEnabled(true);
+                                    else Aceitar.setEnabled(false);
 
+                                }
+                                catch (Exception e)
+                                {
+                                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                    else{
+                        RequestParams rp= new RequestParams();
+                        rp.add("servID","54");
+                        rp.add("id",myid);
+                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                try{
+                                    int a = Integer.parseInt(new String(responseBody));
+                                    ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento");
+                                    if(a>0)Aceitar.setEnabled(true);
+                                    else Aceitar.setEnabled(false);
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
-                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                    utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
 
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
             }
         });
+
+
         RequestParams rps= new RequestParams();
         rps.add("servID","775");
         rps.add("id",myid);
@@ -657,6 +741,84 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
             }
         });
     }
+    void checkTrab()
+    {
+        RequestParams rp = new RequestParams();
+        rp.add("servID","749");
+        rp.add("id",myid);
+
+        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                utils.log("Resultado do check trab "+new String(responseBody));
+                Integer resu= Integer.parseInt(new String(responseBody));
+                if(resu==0)
+                {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Yes button clicked
+                                   serv(1);
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    serv(0);
+                                    BootstrapButton bt= ((BootstrapButton)findViewById(R.id.imworking));
+                                    if(!bt.isShowOutline())bt.callOnClick();
+
+                                    break;
+                                default:
+                                    BootstrapButton bt2= ((BootstrapButton)findViewById(R.id.imworking));
+                                    if(!bt2.isShowOutline())bt2.callOnClick();
+                                    break;
+                            }
+                        }
+                    };
+                    SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+                    Date data = Calendar.getInstance().getTime();
+                    String str = fmt.format(data);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EntregadorLayout.this);
+                    builder.setMessage("Você confirma a sua presença hoje, dia: "+str).setPositiveButton("Sim", dialogClickListener)
+                            .setNegativeButton("Não", dialogClickListener).show();
+                }
+
+                else utils.log("Confirmou trabalho");
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.toast(getBaseContext(),"Erro ao obter confirmação "+new String(responseBody));
+                utils.log("Erro ao obter confirmação  pelo erro "+new String(responseBody));
+
+            }
+        });
+
+    }
+    void serv(int id)
+    {
+        RequestParams rps= new RequestParams();
+        rps.add("servID","669");
+        rps.add("id",myid);
+        rps.add("serv",id+"");
+        HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                utils.toast(getBaseContext(),"Sucesso ao confirmar ");
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.toast(getBaseContext(),"Falha ao confirmar trabalho "+ new String(responseBody));
+            }
+        });
+    }
+
 
 
     private void sendRegistrationToServer(String token) {

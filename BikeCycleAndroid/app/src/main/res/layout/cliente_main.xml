@@ -28,12 +28,27 @@
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/solicita"
-        android:layout_width="131dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="217dp"
         android:text="Solicitar"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/solicitaalocado"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/solicita"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-177dp"
+        android:text="Solicitar entregador alocado"
+        android:visibility="invisible"
         app:bootstrapBrand="success"
         app:bootstrapSize="lg"
         app:buttonMode="regular"
