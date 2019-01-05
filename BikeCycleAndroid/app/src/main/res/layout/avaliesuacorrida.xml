@@ -19,6 +19,7 @@
         android:gravity="top|center_horizontal"
         android:text="Antes de finalizar o pedido, por favor, avalie o entregador"
         android:textSize="20dp"
+        app:bootstrapBrand="info"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

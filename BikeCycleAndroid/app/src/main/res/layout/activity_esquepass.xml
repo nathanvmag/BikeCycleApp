@@ -4,33 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bikefundo"
+    android:background="@drawable/fundolog"
     tools:context=".esquepass">
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="81dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="35dp"
-        android:contentDescription="logoimage"
-        app:srcCompat="@drawable/logo"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="185dp" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/emailadessforg"
         android:layout_width="355dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="143dp"
-        android:hint="Digite seu e-mail"
+        android:layout_centerInParent="true"
+        android:hint="E-mail"
         android:inputType="textEmailAddress"
-        android:textColor="@color/bootstrap_brand_success"
+        android:textColor="@color/bootstrap_brand_info"
         android:textColorLink="@color/bootstrap_brand_success"
         app:bootstrapBrand="info"
-        app:bootstrapSize="xl"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
     <com.beardedhen.androidbootstrap.AwesomeTextView
@@ -39,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="237dp"
+        android:layout_marginBottom="102dp"
         android:text="Será enviado um email para você com sua nova senha"
         app:bootstrapBrand="regular" />
 
@@ -47,12 +34,11 @@
         android:id="@+id/Cliente"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@+id/tx"
         android:layout_alignTop="@+id/entregabutton"
-        android:layout_marginEnd="21dp"
         android:text="Cliente"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="xl"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="lg"
         app:buttonMode="regular"
         app:roundedCorners="true"
         app:showOutline="true" />
@@ -61,12 +47,12 @@
         android:id="@+id/entregabutton"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/emailadessforg"
-        android:layout_marginTop="242dp"
+        android:layout_marginBottom="178dp"
         android:text="Entregador"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="xl"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="lg"
         app:buttonMode="regular"
         app:roundedCorners="true"
         app:showOutline="false" />
@@ -77,9 +63,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="183dp"
+        android:layout_marginBottom="129dp"
         android:text="Enviar"
-        app:bootstrapBrand="success"
+        app:bootstrapBrand="info"
         app:bootstrapSize="lg"
         app:buttonMode="regular"
         app:roundedCorners="true"
@@ -91,10 +77,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="145dp"
+        android:layout_marginBottom="70dp"
         android:text="Voltar"
         android:textStyle="bold"
-        app:bootstrapBrand="success" />
+        app:bootstrapBrand="regular" />
 
 
 </RelativeLayout>

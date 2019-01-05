@@ -1,5 +1,6 @@
-mudar ordem complemento bairro estado e cep   ////
+﻿mudar ordem complemento bairro estado e cep   ////
 trocar o termo cliente por ???
+
 notificacao por push//
 tempo disponível e indisponivel//
 adicionar indentificador aos pedidos//
@@ -10,12 +11,17 @@ atualizar constante o históricos//
 adicionar limite de pedidos ao entregador//
 fazer avaliação interna//
 fazer area das perguntas e respostas//
-
-
-
-toda a área de históricos
-adicionar loja, base e area 
+adicionar loja, base e area //
+toda a área de históricos//
 confirmar se vai trabalhar
-pensar alocado
+confirmar ate 10:00 se vai trabalhar
+juntar um instalador do emulador ja com o app
+pensar icones em baixo
+pensar alocado//
+botao para desativr os avulsos quando não tem alocado
+
+
+mandar dia de folga
+perfis para area de controle 
 
 

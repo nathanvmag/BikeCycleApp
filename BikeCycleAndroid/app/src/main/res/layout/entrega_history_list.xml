@@ -6,30 +6,34 @@
     android:layout_height="100dp"
     android:padding="10dp">
 
-    <com.beardedhen.androidbootstrap.BootstrapLabel
+    <TextView
         android:id="@+id/statustx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:text="Aceito, aguarde o entregador"
+        android:textColor="@color/bootstrap_gray"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:bootstrapBrand="secondary"
         app:bootstrapHeading="h5"
         app:roundedCorners="false" />
 
     <com.beardedhen.androidbootstrap.BootstrapProgressBar
         android:id="@+id/progbar"
-        android:layout_width="wrap_content"
+        android:layout_width="346dp"
         android:layout_height="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
         app:animated="false"
         app:bootstrapBrand="warning"
         app:bootstrapMaxProgress="4"
         app:bootstrapProgress="1"
         app:bootstrapshowPercentage="false"
         app:roundedCorners="true"
-        app:striped="true" />
+        app:striped="false" />
 
     <TextView
         android:id="@+id/datast"
@@ -37,23 +41,55 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:text="20/04/2018" />
+        android:text="20/04/2018"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/horast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/statustx"
         android:layout_alignEnd="@+id/progbar"
-        android:layout_centerVertical="true"
-        android:text="20:30" />
+        android:text="20:30"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/pednum"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/statustx"
+            app:srcCompat="@drawable/number" />
+
+        <TextView
+            android:id="@+id/pednum"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+
+            android:text="60"
+            android:textColor="@color/bootstrap_brand_info"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/alocado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="#33" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/bootstrap_gray_dark"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

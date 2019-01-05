@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".loginPage">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +47,15 @@
             android:name=".ClienteLayout"
             android:label="@string/title_activity_cliente_layout" />
         <activity android:name=".contatarSuporte" />
-        <activity android:name=".AvaliarApp"></activity>
+        <activity android:name=".AvaliarApp" />
+        <activity android:name=".SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".loginPage" />
     </application>
 
 </manifest>

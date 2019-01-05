@@ -2,12 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo4">
 
     <RelativeLayout
         android:id="@+id/indsplay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:visibility="invisible">
 
         <com.beardedhen.androidbootstrap.AwesomeTextView
@@ -15,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="174dp"
+            android:layout_marginTop="230dp"
             android:gravity="center"
             android:text="Você está indisponível, logo não pode aceitar novos pedios, fique disponível para poder trabalhar."
             android:textSize="20sp"
@@ -31,70 +35,96 @@
         android:layout_alignParentTop="true"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/dispotext"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imgv"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="206dp"
-            android:gravity="center"
-            android:text="Existem N pedidos para você neste momento"
-            android:textSize="16sp"
+            android:layout_marginBottom="182dp"
+            app:srcCompat="@drawable/number" />
+
+        <TextView
+            android:id="@+id/dispotext"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="195dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:text="00"
+            android:textColor="@color/bootstrap_brand_info"
+            android:textSize="60sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/bnvd"
+            android:id="@+id/bnvd2"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/dispotext"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="21dp"
+            android:layout_above="@+id/imgv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="Olá Nathan  magalhaes vieira"
+            android:text="Númerdo de pedidos em espera:"
             android:textSize="16dp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/aceitarent"
-            android:layout_width="131dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="147dp"
-            android:text="Aceitar"
-            app:bootstrapBrand="success"
+            android:layout_marginBottom="126dp"
+            android:text="Aceitar Solicitação de coleta"
+            app:bootstrapBrand="info"
             app:bootstrapSize="lg"
             app:buttonMode="regular"
             app:roundedCorners="true"
             app:showOutline="false" />
 
-        <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
-            android:id="@+id/entregafoto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/bnvd"
-            android:layout_marginStart="14dp"
-            android:src="@mipmap/ic_launcher_round"
-            app:bootstrapBrand="success" />
     </RelativeLayout>
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/imworking"
         android:layout_width="106dp"
         android:layout_height="28dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="104dp"
-        android:layout_marginTop="64dp"
+        android:layout_below="@+id/bnvd"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:text="Disponível"
-        app:bootstrapBrand="success"
+        app:bootstrapBrand="info"
         app:bootstrapSize="md"
         app:buttonMode="regular"
         app:roundedCorners="true"
         app:showOutline="false" />
+
+    <com.beardedhen.androidbootstrap.BootstrapCircleThumbnail
+        android:id="@+id/entregafoto"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/defaultpeoplle"
+        app:bootstrapBrand="info" />
+
+    <TextView
+        android:id="@+id/bnvd"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entregafoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="Olá Nathan  magalhaes vieira"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </RelativeLayout>

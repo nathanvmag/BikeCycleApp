@@ -4,19 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bikefundo"
+    android:background="@drawable/fundo3"
     tools:context=".altersenha">
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="81dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="35dp"
-        android:contentDescription="logoimage"
-        app:srcCompat="@drawable/logo"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="185dp" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/oldsenha"
@@ -24,28 +13,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="143dp"
+        android:layout_marginTop="233dp"
         android:hint="Digite sua senha antiga"
         android:inputType="textWebPassword"
-        android:textColor="@color/bootstrap_brand_success"
+        android:textColor="@color/bootstrap_brand_info"
         android:textColorLink="@color/bootstrap_brand_success"
         app:bootstrapBrand="info"
-        app:bootstrapSize="xl"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/oldsenha2"
         android:layout_width="355dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="204dp"
+        android:layout_marginBottom="249dp"
         android:hint="Digite sua nova senha"
         android:inputType="textWebPassword"
-        android:textColor="@color/bootstrap_brand_success"
+        android:textColor="@color/bootstrap_brand_info"
         android:textColorLink="@color/bootstrap_brand_success"
         app:bootstrapBrand="info"
-        app:bootstrapSize="xl"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
@@ -54,13 +43,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="248dp"
+        android:layout_marginBottom="202dp"
         android:hint="Confirme nova senha"
         android:inputType="textEmailAddress|textWebPassword"
-        android:textColor="@color/bootstrap_brand_success"
+        android:textColor="@color/bootstrap_brand_info"
         android:textColorLink="@color/bootstrap_brand_success"
         app:bootstrapBrand="info"
-        app:bootstrapSize="xl"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
@@ -71,7 +60,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="149dp"
         android:text="Alterar"
-        app:bootstrapBrand="success"
+        app:bootstrapBrand="info"
         app:bootstrapSize="lg"
         app:buttonMode="regular"
         app:roundedCorners="true"

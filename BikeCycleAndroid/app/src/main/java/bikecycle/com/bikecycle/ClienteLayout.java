@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -83,6 +85,13 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     new DownloadImageTask2((BootstrapCircleThumbnail) findViewById(R.id.clientlogo))
                             .execute(loginPage.basesite+myfoto);
                     getdispo();
+                    ((CheckBox)findViewById(R.id.permitavulso)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                            ((BootstrapButton)findViewById(R.id.solicita)).setEnabled(b);
+
+                        }
+                    });
                     findViewById(R.id.solicitaalocado).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
@@ -522,12 +531,27 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     v.findViewById(R.id.saibot).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
-                            SharedPreferences.Editor editor= pm.edit();
-                            editor.clear();
-                            editor.commit();
-                            startActivity(new Intent(getBaseContext(),loginPage.class));
-                        }
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
+                                            SharedPreferences.Editor editor= pm.edit();
+                                            editor.clear();
+                                            editor.commit();
+                                            startActivity(new Intent(getBaseContext(),loginPage.class));
+
+                                            break;
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            break;
+                                    }}};
+
+                                   AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            builder.setMessage("Você tem certeza que deseja sair? Você não receberá mais notificações").setPositiveButton("Sim", dialogClickListener)
+                                    .setNegativeButton("Não", dialogClickListener).create().show();
+
+                             }
                     });
                     inHistory=false;
                     inMain=false;
@@ -662,9 +686,17 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                 String resp= new String(responseBody);
                 try{
                     int response = Integer.parseInt(resp);
-                    if(response>0)
+                    if(response>0) {
                         findViewById(R.id.solicitaalocado).setVisibility(View.VISIBLE);
-                    else findViewById(R.id.solicitaalocado).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.permitavulso).setVisibility(View.VISIBLE);
+                        ((BootstrapButton)findViewById(R.id.solicita)).setEnabled(false);
+
+                    }
+                    else {
+                        findViewById(R.id.solicitaalocado).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.permitavulso).setVisibility(View.INVISIBLE);
+                        ((BootstrapButton)findViewById(R.id.solicita)).setEnabled(true);
+                    }
 
                 }
                 catch (Exception e)
@@ -689,7 +721,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try{
                     int a = Integer.parseInt(new String(responseBody));
-                    ((TextView)findViewById(R.id.numsolicita)).setText("Você possui "+a+" pedidos em aberto");
+                    ((TextView)findViewById(R.id.numsolicita)).setText(""+a);
 
                 }
                 catch (Exception e)
@@ -713,7 +745,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try{
                     entregadoresDisponiveis = Integer.parseInt(new String(responseBody));
-                    ((TextView)findViewById(R.id.numsolicita2)).setText("Há "+entregadoresDisponiveis+" entregadores disponível no momento");
+                    ((TextView)findViewById(R.id.numsolicita2)).setText(entregadoresDisponiveis+"");
 
                 }
                 catch (Exception e)

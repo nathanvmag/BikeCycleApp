@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fundo4"
     tools:context=".AvaliarApp">
 
 
@@ -11,24 +12,27 @@
         android:id="@+id/reclamabody2"
         android:layout_width="340dp"
         android:layout_height="200dp"
-        android:layout_centerInParent="true"
+        android:layout_above="@+id/envia2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:gravity="top"
         android:hint="Caso queira, deixe sua opnião"
         android:inputType="textMultiLine"
         android:selectAllOnFocus="true"
         android:singleLine="false"
-        app:bootstrapBrand="success"
-        app:bootstrapSize="md"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
     <com.beardedhen.androidbootstrap.AwesomeTextView
         android:id="@+id/awesomeTextView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/nota"
+        android:layout_alignParentStart="true"
         android:gravity="top|center"
         android:textSize="25dp"
-        app:bootstrapBrand="success"
+        app:bootstrapBrand="regular"
         app:bootstrapText="Como você se sente em relação ao App Bikes Cycle:" />
 
     <com.beardedhen.androidbootstrap.AwesomeTextView
@@ -36,33 +40,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/envia2"
-        android:layout_marginTop="-145dp"
+        android:layout_marginBottom="59dp"
         android:gravity="top|center"
         android:textSize="14dp"
-        app:bootstrapBrand="success"
+        app:bootstrapBrand="regular"
         app:bootstrapText="Dê sua opnião pública na Google Play" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/envia2"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/awesomeTextView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="145dp"
-        android:paddingBottom="30dp"
-        android:paddingTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:paddingBottom="0dp"
         android:text="Enviar "
-        app:bootstrapBrand="success" />
+        app:bootstrapBrand="regular" />
 
     <RatingBar
         android:id="@+id/nota"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/awesomeTextView2"
+        android:layout_height="90dp"
+        android:layout_above="@+id/reclamabody2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-10dp"
         android:numStars="5"
         android:paddingBottom="30dp"
         android:paddingTop="20dp"

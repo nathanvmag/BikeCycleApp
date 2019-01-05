@@ -372,16 +372,35 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                     getLayoutInflater().inflate(R.layout.entrega_configs,mainlayout,true);
                     findViewById(R.id.saibot).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sendRegistrationToServer("");
-                            SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
-                            SharedPreferences.Editor editor= pm.edit();
-                            editor.clear();
-                            editor.commit();
-                            startActivity(new Intent(getBaseContext(),loginPage.class));
-                        }
-                    });
+
+                            @Override
+                            public void onClick(View view) {
+                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                sendRegistrationToServer("");
+
+                                                SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
+                                                SharedPreferences.Editor editor= pm.edit();
+                                                editor.clear();
+                                                editor.commit();
+                                                startActivity(new Intent(getBaseContext(),loginPage.class));
+
+                                                break;
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                break;
+                                        }}};
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                builder.setMessage("Você tem certeza que deseja sair? Você não receberá mais notificações").setPositiveButton("Sim", dialogClickListener)
+                                        .setNegativeButton("Não", dialogClickListener).create().show();
+
+                            }
+
+                        });
+
                     findViewById(R.id.altsenha).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -509,7 +528,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                 else {
                     if(bt.isShowOutline())
                     {
-                        bt.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                        bt.setBootstrapBrand(DefaultBootstrapBrand.INFO);
                         bt.setShowOutline(false);
                         bt.setText("Disponível");
                         displayout.setVisibility(View.VISIBLE);
@@ -548,7 +567,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     Integer value= Integer.parseInt(s);
                     if(value==1)
                     {
-                        bt.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                        bt.setBootstrapBrand(DefaultBootstrapBrand.INFO);
                         bt.setShowOutline(false);
                         bt.setText("Disponível");
                         displayout.setVisibility(View.VISIBLE);
@@ -659,7 +678,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 try{
                                     int a = Integer.parseInt(new String(responseBody));
-                                    ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento (alocado)");
+                                    ((TextView)findViewById(R.id.dispotext)).setText(a+"");
                                     if(a>0)Aceitar.setEnabled(true);
                                     else Aceitar.setEnabled(false);
 
@@ -687,7 +706,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 try{
                                     int a = Integer.parseInt(new String(responseBody));
-                                    ((TextView)findViewById(R.id.dispotext)).setText("Existem "+a+" pedidos para você neste momento");
+                                    ((TextView)findViewById(R.id.dispotext)).setText(a+"");
                                     if(a>0)Aceitar.setEnabled(true);
                                     else Aceitar.setEnabled(false);
 
