@@ -23,7 +23,7 @@ public class loginPage extends AppCompatActivity {
     EditText loginTX,passTX;
     //1 entregador 0 cliente
     public int LoginType=1;
-    public static final String basesite="http://bikecycle.esy.es/";
+    public static final String basesite="http://bikescycle.com/app/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

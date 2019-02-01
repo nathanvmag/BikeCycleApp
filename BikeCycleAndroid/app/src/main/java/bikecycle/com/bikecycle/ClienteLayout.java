@@ -1,22 +1,15 @@
 package bikecycle.com.bikecycle;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,10 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -36,19 +27,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
-import com.beardedhen.androidbootstrap.BootstrapLabel;
 import com.beardedhen.androidbootstrap.BootstrapProgressBar;
 import com.beardedhen.androidbootstrap.api.defaults.DefaultBootstrapBrand;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +66,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                     inHistory=false;
                     getLayoutInflater().inflate(R.layout.cliente_main,mainlayout,true);
-                    ((TextView)findViewById(R.id.benvindclient)).setText("Bem vindo: "+nome);
+                    ((TextView)findViewById(R.id.benvindclient)).setText("Bem-vindo, "+nome);
                     new DownloadImageTask2((BootstrapCircleThumbnail) findViewById(R.id.clientlogo))
                             .execute(loginPage.basesite+myfoto);
                     getdispo();
@@ -446,7 +431,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                     RequestParams requestParams= new RequestParams();
                                                                     requestParams.add("servID","993");
                                                                     requestParams.add("entreid",entreg.entregaid+"");
-                                                                    requestParams.add("nota",((RatingBar)ratingalert.findViewById(R.id.ratingBar)).getRating()+"");
+                                                                    requestParams.add("nota",((RatingBar)ratingalert.findViewById(R.id.rtbar)).getRating()+"");
                                                                     requestParams.add("state",((BootstrapButton)view).isShowOutline()?2+"": 3+"");
                                                                     utils.log("EAIII");
                                                                     HttpUtils.postByUrl(basesite + "application.php", requestParams, new AsyncHttpResponseHandler() {
@@ -590,6 +575,13 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                         }
                     });
+                    findViewById(R.id.sobre).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(view.getContext(),about.class ));
+
+                        }
+                    });
                     findViewById(R.id.altcad).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -633,7 +625,13 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_layout);
-
+        Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
+        {
+            @Override
+            public void uncaughtException (Thread thread, Throwable e)
+            {
+            }
+        });
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation2);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mainlayout= findViewById(R.id.clientelayoutmain);

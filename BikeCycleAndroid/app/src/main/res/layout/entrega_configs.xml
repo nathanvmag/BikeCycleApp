@@ -6,109 +6,128 @@
     android:layout_height="match_parent"
     android:background="@drawable/fundo4">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
+        android:layout_height="500dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical">
 
-            <com.beardedhen.androidbootstrap.AwesomeTextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:text="Selecione uma das opções a baixo:"
-                android:textSize="18sp"
-                app:bootstrapBrand="regular" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
 
-        <com.beardedhen.androidbootstrap.BootstrapLabel
-            android:id="@+id/altsenha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:padding="0dp"
-            android:text="Alterar senha"
-            app:bootstrapBrand="info"
-            app:bootstrapHeading="h3"
-            app:roundedCorners="false" />
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="Selecione uma das opções abaixo:"
+                    android:textSize="18sp"
+                    app:bootstrapBrand="regular" />
+            </RelativeLayout>
 
-        <com.beardedhen.androidbootstrap.BootstrapLabel
-            android:id="@+id/altcad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:padding="0dp"
-            android:text="Alterar Cadastro"
-            app:bootstrapBrand="info"
-            app:bootstrapHeading="h3"
-            app:roundedCorners="false" />
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/altsenha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Alterar Senha"
+                app:bootstrapBrand="info"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
 
-        <com.beardedhen.androidbootstrap.BootstrapLabel
-            android:id="@+id/contatSup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:padding="0dp"
-            android:text="Contatar Suporte"
-            app:bootstrapBrand="info"
-            app:bootstrapHeading="h3"
-            app:roundedCorners="false" />
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/altcad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Alterar Cadastro"
+                app:bootstrapBrand="info"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
 
-        <com.beardedhen.androidbootstrap.BootstrapLabel
-            android:id="@+id/avaliaapp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:padding="0dp"
-            android:text="Avaliar App"
-            app:bootstrapBrand="info"
-            app:bootstrapHeading="h3"
-            app:roundedCorners="false" />
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/contatSup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Contatar Suporte"
+                app:bootstrapBrand="info"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
 
-        <com.beardedhen.androidbootstrap.BootstrapLabel
-            android:id="@+id/ajuda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:padding="0dp"
-            android:text="Ajuda"
-            app:bootstrapBrand="info"
-            app:bootstrapHeading="h3"
-            app:roundedCorners="false" />
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/avaliaapp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Avaliar App"
+                app:bootstrapBrand="info"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
 
-        <com.beardedhen.androidbootstrap.BootstrapLabel
-            android:id="@+id/saibot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:padding="0dp"
-            android:text="Sair"
-            app:bootstrapBrand="regular"
-            app:bootstrapHeading="h3"
-            app:roundedCorners="false" />
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/ajuda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Ajuda"
+                app:bootstrapBrand="info"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
 
-    </LinearLayout>
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/sobre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Sobre"
+                app:bootstrapBrand="info"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
+
+            <com.beardedhen.androidbootstrap.BootstrapLabel
+                android:id="@+id/saibot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/bootstrap_h5_hori_padding"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:padding="0dp"
+                android:text="Sair"
+                app:bootstrapBrand="regular"
+                app:bootstrapHeading="h4"
+                app:roundedCorners="false" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

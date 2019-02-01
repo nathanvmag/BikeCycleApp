@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/pass"
             android:layout_below="@+id/pass"
-            android:text="Esqueceu sua senha?"
+            android:text="Esqueci minha senha."
             android:textStyle="bold"
             app:bootstrapBrand="regular" />
 
@@ -53,9 +53,9 @@
             android:id="@+id/emailadess"
             android:layout_width="355dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_above="@+id/pass"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="214dp"
+            android:layout_marginBottom="5dp"
             android:hint="E-mail"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="false"

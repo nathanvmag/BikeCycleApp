@@ -80,7 +80,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     Aceitar= findViewById(R.id.aceitarent);
                     Aceitar.setEnabled(false);
 
-                    ( (TextView)findViewById(R.id.bnvd)).setText("Olá, "+nome);
+                    ( (TextView)findViewById(R.id.bnvd)).setText("Olá, "+nome+".");
                     new DownloadImageTask2((BootstrapCircleThumbnail)findViewById(R.id.entregafoto)).execute(basesite+myfoto);
 
                     getState((BootstrapButton)findViewById(R.id.imworking));
@@ -435,6 +435,13 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                         }
                     });
+                    findViewById(R.id.sobre).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(view.getContext(),about.class ));
+
+                        }
+                    });
                     findViewById(R.id.altcad).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -482,6 +489,13 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entregador_layout);
+        Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
+        {
+            @Override
+            public void uncaughtException (Thread thread, Throwable e)
+            {
+            }
+        });
         handler= new Handler();
         handler.postDelayed(this,2000);
         mTextMessage = (TextView) findViewById(R.id.message);

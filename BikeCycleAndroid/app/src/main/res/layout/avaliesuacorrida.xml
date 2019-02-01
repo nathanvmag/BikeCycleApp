@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
+    android:clickable="true"
     android:padding="5dp">
 
     <com.beardedhen.androidbootstrap.AwesomeTextView
@@ -20,30 +21,21 @@
         android:text="Antes de finalizar o pedido, por favor, avalie o entregador"
         android:textSize="20dp"
         app:bootstrapBrand="info"
-        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
+        app:layout_constraintBottom_toTopOf="@+id/rtbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="240dp"
-        android:layout_height="57dp"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentTop="false"
+        android:id="@+id/rtbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txrating"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="76dp"
-        android:layout_marginLeft="63dp"
-        android:layout_marginRight="76dp"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="1dp"
-        android:isIndicator="true"
+        android:layout_marginTop="10dp"
+        android:isIndicator="false"
         android:numStars="5"
-        android:stepSize="0.5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txrating" />
+        android:rating="5"
+        android:stepSize="0.5" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
