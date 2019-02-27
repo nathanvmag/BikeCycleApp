@@ -94,7 +94,7 @@ public class esquepass extends AppCompatActivity {
                            else{
                                Log.d("asd", "DEU ERROOOOOW : " + response);
 
-                               Toast.makeText(getBaseContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
+                               Toast.makeText(getApplicationContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
                            }
 
                        }
@@ -110,12 +110,12 @@ public class esquepass extends AppCompatActivity {
                            Log.d("asd", " A resposta é  : " + Result +"  "+Result.equals("OK"));
                            if(Result.equals("OK"))
                            {
-                               Toast.makeText(getBaseContext(),"Sucesso ao enviar o email, olhe sua caixa de mensagem",Toast.LENGTH_LONG).show();
+                               Toast.makeText(getApplicationContext(),"Sucesso ao enviar o email, olhe sua caixa de mensagem",Toast.LENGTH_LONG).show();
                            }
                            else{
                                Log.d("asd", "DEU ERROOOOOW : " + responseString);
 
-                               Toast.makeText(getBaseContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
+                               Toast.makeText(getApplicationContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
                            }
 
                        }

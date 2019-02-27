@@ -33,6 +33,7 @@ public class HttpUtils {
     }
 
     public static void postByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.setTimeout(60);
         client.post(url, params, responseHandler);
     }
     public static void postByUrlSync(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

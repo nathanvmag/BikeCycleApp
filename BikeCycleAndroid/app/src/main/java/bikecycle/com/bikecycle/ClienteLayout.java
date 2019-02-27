@@ -99,9 +99,9 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     {
                                                         findViewById(R.id.navigation_dashboard2).callOnClick();
                                                         if(entregadoresDisponiveis>0)
-                                                            Toast.makeText(getBaseContext(),"Sucesso ao realizar pedido, aguarde por entregadores alocados ",Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(getApplicationContext(),"Sucesso ao realizar pedido, aguarde por entregadores alocados ",Toast.LENGTH_LONG).show();
                                                         else {
-                                                            utils.toast(view.getContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
+                                                            utils.toast(getApplicationContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
                                                             RequestParams rps= new RequestParams();
                                                             rps.add("servID","887");
                                                             rps.add("title","Falta de entregadores ");
@@ -124,7 +124,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                         }
                                                     }
                                                     else{
-                                                        Toast.makeText(getBaseContext(),"Falha ao solicitar entregador alocado "+resp,Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getApplicationContext(),"Falha ao solicitar entregador alocado "+resp,Toast.LENGTH_LONG).show();
 
                                                     }
                                                 }
@@ -132,7 +132,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                                     view.setEnabled(true);
-                                                    Toast.makeText(getBaseContext(),"Falha ao solicitar entregador" +new String(responseBody),Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(),"Falha ao solicitar entregador" +new String(responseBody),Toast.LENGTH_LONG).show();
                                                 }
                                             });
                                             break;
@@ -174,9 +174,9 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     {
                                                         findViewById(R.id.navigation_dashboard2).callOnClick();
                                                         if(entregadoresDisponiveis>0)
-                                                            Toast.makeText(getBaseContext(),"Sucesso ao realizar pedido, aguarde por entregadores  ",Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(getApplicationContext(),"Sucesso ao realizar pedido, aguarde por entregadores  ",Toast.LENGTH_LONG).show();
                                                         else {
-                                                            utils.toast(view.getContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
+                                                            utils.toast(getApplicationContext(),"No momento não há entregadores disponíveis, aguarde um momento que seu pedido será aceito");
                                                             RequestParams rps= new RequestParams();
                                                             rps.add("servID","887");
                                                             rps.add("title","Falta de entregadores ");
@@ -199,7 +199,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                         }
                                                     }
                                                     else{
-                                                        Toast.makeText(getBaseContext(),"Falha ao solicitar entregador "+resp,Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getApplicationContext(),"Falha ao solicitar entregador "+resp,Toast.LENGTH_LONG).show();
 
                                                     }
                                                 }
@@ -207,7 +207,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                                     view.setEnabled(true);
-                                                    Toast.makeText(getBaseContext(),"Falha ao solicitar entregador" +new String(responseBody),Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(),"Falha ao solicitar entregador" +new String(responseBody),Toast.LENGTH_LONG).show();
                                                 }
                                             });
                                             break;
@@ -262,7 +262,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 utils.log("SAIU  LOOP ");
 
                                 entregaAdpter adapter =
-                                        new entregaAdpter(ents, getBaseContext());
+                                        new entregaAdpter(ents, getApplicationContext());
                                 lv.setAdapter(adapter);
 
                                 lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -286,18 +286,18 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                     if(resp.equals("OK"))
                                                                     {
                                                                         findViewById(R.id.navigation_dashboard2).callOnClick();
-                                                                        utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
+                                                                        utils.toast(getApplicationContext(),"Sucesso ao cancelar o pedido ");
 
                                                                     }
                                                                     else {
-                                                                        utils.toast(view.getContext(),"Falha ao cancelar o pedido "+resp);
+                                                                        utils.toast(getApplicationContext(),"Falha ao cancelar o pedido "+resp);
                                                                     }
 
                                                                 }
 
                                                                 @Override
                                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                    utils.toast(view.getContext(),"Falha ao cancelar o pedido "+new String(responseBody));
+                                                                    utils.toast(getApplicationContext(),"Falha ao cancelar o pedido "+new String(responseBody));
                                                                 }
                                                             });
 
@@ -404,13 +404,13 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                         pw.dismiss();
                                                                         findViewById(R.id.navigation_dashboard2).callOnClick();
                                                                     }
-                                                                    else  Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                    else  Toast.makeText(getApplicationContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                                                 }
 
                                                                 @Override
                                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                    Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                    Toast.makeText(getApplicationContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                                                 }
                                                             });
@@ -443,13 +443,13 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                                 pw.dismiss();
                                                                                 findViewById(R.id.navigation_dashboard2).callOnClick();
                                                                             }
-                                                                            else  Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                            else  Toast.makeText(getApplicationContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                                                         }
 
                                                                         @Override
                                                                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                            Toast.makeText(getBaseContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                            Toast.makeText(getApplicationContext(),"Falha ao alterar status "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                                                         }
                                                                     });
@@ -458,7 +458,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                             builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                                    utils.toast(view.getContext(),"Por favor preencha a avaliação para finalizar o pedido");
+                                                                    utils.toast(getApplicationContext(),"Por favor preencha a avaliação para finalizar o pedido");
                                                                 }
                                                             });
                                                             builder.create().show();
@@ -468,14 +468,14 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     });
                                                 }
                                             else{
-                                                    Toast.makeText(getBaseContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                                 }
                                             }
 
                                             @Override
                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                Toast.makeText(view.getContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
                                             }
                                         });
 
@@ -484,7 +484,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                                     }
                                         else{
-                                            Toast.makeText(view.getContext(),"Este pedido não possui entregador ainda",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(),"Este pedido não possui entregador ainda",Toast.LENGTH_LONG).show();
                                         }
                                     }
 
@@ -495,7 +495,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                             {
                                 try{
                                 findViewById(R.id.textView2).setVisibility(View.VISIBLE);
-                                Toast.makeText(getBaseContext(),"Falha ao obter histórico  "+e.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+e.getMessage(),Toast.LENGTH_LONG).show();
                                 utils.log(e);
                             }catch (Exception xe){
 
@@ -504,7 +504,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Toast.makeText(getBaseContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                         }
                     });
@@ -525,7 +525,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                             SharedPreferences.Editor editor= pm.edit();
                                             editor.clear();
                                             editor.commit();
-                                            startActivity(new Intent(getBaseContext(),loginPage.class));
+                                            startActivity(new Intent(getApplicationContext(),loginPage.class));
 
                                             break;
                                         case DialogInterface.BUTTON_NEGATIVE:
@@ -544,7 +544,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     v.findViewById(R.id.altsenha).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent= new Intent(view.getContext(),altersenha.class);
+                            Intent intent= new Intent(getApplicationContext(),altersenha.class);
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","0");
                             startActivity(intent);
@@ -553,7 +553,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     findViewById(R.id.contatSup).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent= new Intent(view.getContext(),contatarSuporte.class);
+                            Intent intent= new Intent(getApplicationContext(),contatarSuporte.class);
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","1");
                             startActivity(intent);
@@ -562,7 +562,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     findViewById(R.id.avaliaapp).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent= new Intent(view.getContext(),AvaliarApp.class);
+                            Intent intent= new Intent(getApplicationContext(),AvaliarApp.class);
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","1");
                             startActivity(intent);
@@ -578,7 +578,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     findViewById(R.id.sobre).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(new Intent(view.getContext(),about.class ));
+                            startActivity(new Intent(getApplicationContext(),about.class ));
 
                         }
                     });
@@ -608,7 +608,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                     String resp= new String(responseBody);
-                                    Toast.makeText(getBaseContext(),"Falha ao alterar cadastro "+resp,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Falha ao alterar cadastro "+resp,Toast.LENGTH_LONG).show();
                                     utils.log("Falhou "+resp);
                                 }
                             });
@@ -625,11 +625,13 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_layout);
-        Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
+       Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
         {
             @Override
             public void uncaughtException (Thread thread, Throwable e)
+
             {
+                utils.toast(getApplicationContext(),"deu erro "+ e);
             }
         });
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation2);
@@ -672,6 +674,11 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // Do Here what ever you want do on back press;
+    }
+
 
     void getdispo()
     {
@@ -699,14 +706,14 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                 }
                 catch (Exception e)
                 {
-                    utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+                    utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
 
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+                utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
             }
         });
 
@@ -724,14 +731,14 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                 }
                 catch (Exception e)
                 {
-                    //Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -748,14 +755,14 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                 }
                 catch (Exception e)
                 {
-                    //Toast.makeText(getBaseContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
 
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getBaseContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Falha ao obter entregadores disponíveis",Toast.LENGTH_LONG).show();
             }
         });
     }

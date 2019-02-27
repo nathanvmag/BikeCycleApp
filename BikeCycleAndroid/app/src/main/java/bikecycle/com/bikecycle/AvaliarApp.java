@@ -40,19 +40,19 @@ public class AvaliarApp extends AppCompatActivity {
                             String res= new String(responseBody);
                             if (res.equals("OK"))
                             {
-                                utils.toast(getBaseContext(),"Sucesso ao Enviar Avaliação ");
+                                utils.toast(getApplicationContext(),"Sucesso ao Enviar Avaliação ");
                                 onBackPressed();
 
                             }
                             else{
-                                utils.toast(getBaseContext(),"Falha ao Enviar Avaliação "+ new String(responseBody));
+                                utils.toast(getApplicationContext(),"Falha ao Enviar Avaliação "+ new String(responseBody));
 
                             }
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            utils.toast(getBaseContext(),"Falha ao Enviar Avaliação "+ new String(responseBody));
+                            utils.toast(getApplicationContext(),"Falha ao Enviar Avaliação "+ new String(responseBody));
                         }
                     });
                 }

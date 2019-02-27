@@ -42,18 +42,18 @@ public class contatarSuporte extends AppCompatActivity {
                             String res= new String(responseBody);
                             if (res.equals("OK"))
                             {
-                                utils.toast(getBaseContext(),"Sucesso ao Enviar mensagem ");
+                                utils.toast(getApplicationContext(),"Sucesso ao Enviar mensagem ");
 
                             }
                             else{
-                                utils.toast(getBaseContext(),"Falha ao Enviar mensagem "+ new String(responseBody));
+                                utils.toast(getApplicationContext(),"Falha ao Enviar mensagem "+ new String(responseBody));
 
                             }
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            utils.toast(getBaseContext(),"Falha ao Enviar mensagem "+ new String(responseBody));
+                            utils.toast(getApplicationContext(),"Falha ao Enviar mensagem "+ new String(responseBody));
                         }
                     });
                 }

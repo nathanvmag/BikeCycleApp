@@ -56,7 +56,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 {
 
     private TextView mTextMessage;
-    private RelativeLayout mainlayout,displayout,indisplayout;
+    private RelativeLayout mainlayout,displayout,indisplayout,loading;
     private String myid,myfoto,nome;
     BootstrapButton Aceitar;
     private Handler handler;
@@ -133,7 +133,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                                             findViewById(R.id.navigation_dashboard).callOnClick();
                                                                             utils.log("Sucesso ao receber o pedido, cliquei nele para mais informações");
                                                                         } else {
-                                                                            utils.toast(getBaseContext(), "Falha ao aceitar pedido " + resp);
+                                                                            utils.toast(getApplicationContext(), "Falha ao aceitar pedido " + resp);
 
                                                                         }
 
@@ -144,16 +144,16 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                                         view.setEnabled(false);
                                                                         String resp = new String(responseBody);
                                                                         utils.log(resp);
-                                                                        utils.toast(getBaseContext(), "Falha ao aceitar pedido " + resp);
+                                                                        utils.toast(getApplicationContext(), "Falha ao aceitar pedido " + resp);
 
                                                                     }
                                                                 });
                                                             } else {
-                                                                utils.toast(view.getContext(), "Você já possui 3 pedidos em andamento, finalize-os primeiro");
+                                                                utils.toast(getApplicationContext(), "Você já possui 3 pedidos em andamento, finalize-os primeiro");
                                                             }
 
                                                     } catch (Exception e) {
-                                                        utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+                                                        utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
 
                                                     }
                                                 }
@@ -206,7 +206,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 }
 
                                 entregaAdpter adapter =
-                                        new entregaAdpter(entregas, getBaseContext());
+                                        new entregaAdpter(entregas, getApplicationContext());
                                 lv.setAdapter(adapter);
                                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -298,18 +298,18 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                                                     String res= new String(responseBody);
                                                                                     if (res.equals("OK"))
                                                                                     {
-                                                                                        utils.toast(getBaseContext(),"Sucesso ao reportar o problema ");
+                                                                                        utils.toast(getApplicationContext(),"Sucesso ao reportar o problema ");
 
                                                                                     }
                                                                                     else{
-                                                                                        utils.toast(getBaseContext(),"Falha ao reportar o problema "+ new String(responseBody));
+                                                                                        utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
 
                                                                                     }
                                                                                 }
 
                                                                                 @Override
                                                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                                    utils.toast(getBaseContext(),"Falha ao reportar o problema "+ new String(responseBody));
+                                                                                    utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
                                                                                 }
                                                                             });
                                                                         }
@@ -339,7 +339,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                                     view.setEnabled(true);
-                                                    Toast.makeText(getBaseContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
                                                 }
                                             });
 
@@ -350,18 +350,20 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             {
                                 findViewById(R.id.textView2).setVisibility(View.VISIBLE);
 
-                                Toast.makeText(getBaseContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
                             }
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            findViewById(R.id.textView2).setVisibility(View.VISIBLE);
+
+                       try{     findViewById(R.id.textView2).setVisibility(View.VISIBLE);
                             utils.log("resposta "+new String(responseBody));
 
-                            Toast.makeText(getBaseContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
 
-                        }
+                        }catch (Exception e){}}
+
                     } );
 
 
@@ -375,6 +377,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                             @Override
                             public void onClick(View view) {
+                                utils.log("sair");
                                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -386,7 +389,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                 SharedPreferences.Editor editor= pm.edit();
                                                 editor.clear();
                                                 editor.commit();
-                                                startActivity(new Intent(getBaseContext(),loginPage.class));
+                                                startActivity(new Intent(getApplicationContext(),loginPage.class));
 
                                                 break;
                                             case DialogInterface.BUTTON_NEGATIVE:
@@ -404,7 +407,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     findViewById(R.id.altsenha).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent= new Intent(view.getContext(),altersenha.class);
+                            Intent intent= new Intent(getApplicationContext(),altersenha.class);
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","1");
                             startActivity(intent);
@@ -413,7 +416,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     findViewById(R.id.contatSup).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent= new Intent(view.getContext(),contatarSuporte.class);
+                            Intent intent= new Intent(getApplicationContext(),contatarSuporte.class);
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","0");
                             startActivity(intent);
@@ -422,7 +425,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     findViewById(R.id.avaliaapp).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent= new Intent(view.getContext(),AvaliarApp.class);
+                            Intent intent= new Intent(getApplicationContext(),AvaliarApp.class);
                             intent.putExtra("id",myid);
                             intent.putExtra("tipe","0");
                             startActivity(intent);
@@ -438,7 +441,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     findViewById(R.id.sobre).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(new Intent(view.getContext(),about.class ));
+                            startActivity(new Intent(getApplicationContext(),about.class ));
 
                         }
                     });
@@ -468,7 +471,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                     String resp= new String(responseBody);
-                                    Toast.makeText(getBaseContext(),"Falha ao alterar cadastro "+resp,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Falha ao alterar cadastro "+resp,Toast.LENGTH_LONG).show();
                                     utils.log("Falhou "+resp);
                                 }
                             });
@@ -493,9 +496,12 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
         {
             @Override
             public void uncaughtException (Thread thread, Throwable e)
+
             {
+                utils.toast(getApplicationContext(),"deu erro "+ e);
             }
         });
+        loading= findViewById(R.id.loadinglogin);
         handler= new Handler();
         handler.postDelayed(this,2000);
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -527,6 +533,11 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
         }
         findViewById(R.id.navigation_home).callOnClick();
     }
+    void loadingpage(boolean t)
+    {
+        loading.setVisibility(t?View.VISIBLE:View.INVISIBLE);
+    }
+
     void setWorkstate(int state, final BootstrapButton bt)
     {
         RequestParams rp= new RequestParams();
@@ -538,7 +549,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                // utils.log(new String(responseBody));
                 if(!new String(responseBody).equals("OK"))
-                    Toast.makeText(getBaseContext(),"Falha ao alterar estado"+new String(responseBody),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Falha ao alterar estado"+new String(responseBody),Toast.LENGTH_LONG).show();
                 else {
                     if(bt.isShowOutline())
                     {
@@ -561,7 +572,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getBaseContext(),"Falha ao alterar estado"+new String(responseBody),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Falha ao alterar estado"+new String(responseBody),Toast.LENGTH_LONG).show();
             }
         };
 
@@ -596,7 +607,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     }
                 }catch (Exception e)
                 {
-                    Toast.makeText(getBaseContext(),"Falha ao status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Falha ao status "+new String(responseBody),Toast.LENGTH_LONG).show();
                     bt.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
                     bt.setShowOutline(true);
                     bt.setText("Indisponível");
@@ -608,7 +619,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getBaseContext(),"Falha ao status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Falha ao status "+new String(responseBody),Toast.LENGTH_LONG).show();
                 bt.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
                 bt.setShowOutline(true);
                 bt.setText("Indisponível");
@@ -679,7 +690,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
         HttpUtils.postByUrl(basesite + "application.php", ques, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
                 String resp = new String(responseBody);
+
                 try{
                     int rps= Integer.parseInt(resp);
                     if(rps>0)
@@ -687,6 +700,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                         RequestParams rp= new RequestParams();
                         rp.add("servID","55");
                         rp.add("id",myid);
+                      //  loadingpage(true);
+
                         HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -699,14 +714,14 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 }
                                 catch (Exception e)
                                 {
-                                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                 }
                             }
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -727,28 +742,28 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 }
                                 catch (Exception e)
                                 {
-                                    Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                                 }
                             }
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Toast.makeText(getBaseContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 }
                 catch(Exception e)
                 {
-                    utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+                    utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
 
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getBaseContext(),"Falha ao obter dados do servidor");
+                utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
             }
         });
 
@@ -825,7 +840,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getBaseContext(),"Erro ao obter confirmação "+new String(responseBody));
+                utils.toast(getApplicationContext(),"Erro ao obter confirmação "+new String(responseBody));
                 utils.log("Erro ao obter confirmação  pelo erro "+new String(responseBody));
 
             }
@@ -841,13 +856,13 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
         HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                utils.toast(getBaseContext(),"Sucesso ao confirmar ");
+                utils.toast(getApplicationContext(),"Sucesso ao confirmar ");
 
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getBaseContext(),"Falha ao confirmar trabalho "+ new String(responseBody));
+                utils.toast(getApplicationContext(),"Falha ao confirmar trabalho "+ new String(responseBody));
             }
         });
     }

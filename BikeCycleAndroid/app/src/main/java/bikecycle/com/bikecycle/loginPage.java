@@ -3,14 +3,17 @@ package bikecycle.com.bikecycle;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -35,19 +38,25 @@ public class loginPage extends AppCompatActivity {
         login.setVisibility(View.INVISIBLE);
 
         if(pm.contains("login")&&pm.contains("pass"))
-        {
+        {        login.setVisibility(View.INVISIBLE);
+
             loading.setVisibility(View.VISIBLE);
             earlyLogin(pm.getString("login",""),pm.getString("pass",""),pm.getInt("tipe",0));
-        }
+        }else{
         loading.setVisibility(View.INVISIBLE);
-        login.setVisibility(View.VISIBLE);
+        login.setVisibility(View.VISIBLE);}
 
         TypefaceProvider.registerDefaultIconSets();
         cliente= (BootstrapButton)findViewById(R.id.Cliente);
         entregador=findViewById(R.id.entregabutton);
         loginTX=findViewById(R.id.emailadess);
         passTX=findViewById(R.id.pass);
-
+        findViewById(R.id.ver_senha).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((BootstrapEditText)passTX).setInputType(((BootstrapEditText)passTX).getInputType()== InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD? InputType.TYPE_CLASS_TEXT:InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+            }
+        });
 
 
 
@@ -104,6 +113,8 @@ public class loginPage extends AppCompatActivity {
         this.moveTaskToBack(true);
     }
     void doLogin(final View view) {
+        loading.setVisibility(View.VISIBLE);
+        login.setVisibility(View.INVISIBLE);
         RequestParams rp = new RequestParams();
         rp.add("servID", "90");
         rp.add("login", loginTX.getText().toString());
@@ -115,24 +126,27 @@ public class loginPage extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 view.setEnabled(true);
 
+                loading.setVisibility(View.INVISIBLE);
+                login.setVisibility(View.VISIBLE);
+
                 String resp = new String(responseBody);
 
                 if (resp.equals("W")) {
-                    Toast.makeText(getBaseContext(), "Login ou Senha incorretos, Por favor tente novamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Login ou Senha incorretos, Por favor tente novamente", Toast.LENGTH_LONG).show();
 
                 } else if (resp.equals("NF")) {
-                    Toast.makeText(getBaseContext(), "Sua conta ainda não foi confirmada, aguarde mais um tempo, caso demore, contate o suporte", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Sua conta ainda não foi confirmada, aguarde mais um tempo, caso demore, contate o suporte", Toast.LENGTH_LONG).show();
 
                 } else if (resp.split("!").length == 3) {
                     String[] ids = resp.split("!");
                     int tipe= LoginType;
                     Intent intent;
                     if(tipe==1) {
-                        intent = new Intent(getBaseContext(), EntregadorLayout.class);
+                        intent = new Intent(getApplicationContext(), EntregadorLayout.class);
 
                     }
                     else{
-                        intent= new Intent(getBaseContext(),ClienteLayout.class);
+                        intent= new Intent(getApplicationContext(),ClienteLayout.class);
                     }
                     intent.putExtra("id", ids[0]);
                     intent.putExtra("nome", ids[1]);
@@ -142,7 +156,7 @@ public class loginPage extends AppCompatActivity {
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(getBaseContext(), "Erro ao Logar " + responseBody, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Erro ao Logar " + new String(responseBody), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -151,7 +165,9 @@ public class loginPage extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 view.setEnabled(true);
 
-                Toast.makeText(getBaseContext(), "Erro ao Logar " + responseBody, Toast.LENGTH_LONG).show();
+                loading.setVisibility(View.INVISIBLE);
+                login.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Erro ao Logar " + new String( responseBody), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -169,12 +185,16 @@ public class loginPage extends AppCompatActivity {
 
                 if(resp.equals("W"))
                 {
-                    Toast.makeText(getBaseContext(),"Login ou Senha incorretos, Por favor tente novamente",Toast.LENGTH_LONG).show();
+                    login.setVisibility(View.VISIBLE);
+
+                    Toast.makeText(getApplicationContext(),"Login ou Senha incorretos, Por favor tente novamente",Toast.LENGTH_LONG).show();
 
                 }
                 else if(resp.equals("NF"))
                 {
-                    Toast.makeText(getBaseContext(),"Sua conta ainda não foi confirmada, aguarde mais um tempo, caso demore, contate o suporte",Toast.LENGTH_LONG).show();
+                    login.setVisibility(View.VISIBLE);
+
+                    Toast.makeText(getApplicationContext(),"Sua conta ainda não foi confirmada, aguarde mais um tempo, caso demore, contate o suporte",Toast.LENGTH_LONG).show();
 
                 }
                 else if (resp.split("!").length==3)
@@ -182,11 +202,11 @@ public class loginPage extends AppCompatActivity {
                     String[] ids = resp.split("!");
                     Intent intent;
                     if(tipe==1) {
-                        intent = new Intent(getBaseContext(), EntregadorLayout.class);
+                        intent = new Intent(getApplicationContext(), EntregadorLayout.class);
 
                     }
                     else{
-                        intent= new Intent(getBaseContext(),ClienteLayout.class);
+                        intent= new Intent(getApplicationContext(),ClienteLayout.class);
                     }
                     intent.putExtra("id", ids[0]);
                     intent.putExtra("nome", ids[1]);
@@ -196,7 +216,7 @@ public class loginPage extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(getBaseContext(),"Erro ao Logar "+responseBody,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Erro ao Logar "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -204,7 +224,7 @@ public class loginPage extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                Toast.makeText(getBaseContext(),"Erro ao Logar "+responseBody,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Erro ao Logar "+new String(responseBody),Toast.LENGTH_LONG).show();
             }
         });}
     

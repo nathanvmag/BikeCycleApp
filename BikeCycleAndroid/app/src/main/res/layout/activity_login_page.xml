@@ -35,6 +35,18 @@
             android:textStyle="bold"
             app:bootstrapBrand="regular" />
 
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/ver_senha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pass"
+            android:layout_alignEnd="@+id/pass"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="246dp"
+            android:text="Visualizar Senha"
+            android:textStyle="bold"
+            app:bootstrapBrand="regular" />
+
         <com.beardedhen.androidbootstrap.BootstrapEditText
             android:id="@+id/pass"
             android:layout_width="355dp"
@@ -118,6 +130,7 @@
             app:buttonMode="regular"
             app:roundedCorners="true"
             app:showOutline="false" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -132,6 +145,7 @@
             android:layout_height="120dp"
             android:layout_centerInParent="true"
             android:src="@drawable/loading" />
+
     </RelativeLayout>
 
 </RelativeLayout>

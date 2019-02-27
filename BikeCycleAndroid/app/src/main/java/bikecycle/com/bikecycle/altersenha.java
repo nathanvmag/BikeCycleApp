@@ -36,7 +36,7 @@ public class altersenha extends AppCompatActivity {
                 if(oldpass.trim().length()>0&&novasenha.trim().length()>0&&novasenhaconf.trim().length()>0)
                 {
                     if(!novasenha.equals(novasenhaconf)){
-                        Toast.makeText(getBaseContext(),"As senhas não coincidem",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"As senhas não coincidem",Toast.LENGTH_LONG).show();
                         return;
                     }else{
                     RequestParams rp = new RequestParams();
@@ -56,16 +56,16 @@ public class altersenha extends AppCompatActivity {
                             utils.log(resp);
                             if(resp.equals("OK"))
                             {
-                                Toast.makeText(getBaseContext(), "Sucesso ao alterar a senha", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Sucesso ao alterar a senha", Toast.LENGTH_LONG).show();
                                 SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
                                 SharedPreferences.Editor editor= pm.edit();
                                 editor.clear();
                                 editor.commit();
-                                startActivity(new Intent(getBaseContext(),loginPage.class));
+                                startActivity(new Intent(getApplicationContext(),loginPage.class));
 
 
                             }else{
-                                Toast.makeText(getBaseContext(), "Falha ao alterar a senha, senha antiga incorreta"+resp ,Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Falha ao alterar a senha, senha antiga incorreta"+resp ,Toast.LENGTH_LONG).show();
 
                             }
                         }
@@ -74,12 +74,12 @@ public class altersenha extends AppCompatActivity {
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                             view.setEnabled(true);
 
-                            Toast.makeText(getBaseContext(), "Erro ao alterar senha " + responseBody, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Erro ao alterar senha " + responseBody, Toast.LENGTH_LONG).show();
                         }
                     });
                 }
                 }
-                else Toast.makeText(getBaseContext(),"Por favor preencha todos os campos",Toast.LENGTH_LONG).show();
+                else Toast.makeText(getApplicationContext(),"Por favor preencha todos os campos",Toast.LENGTH_LONG).show();
             }
         });
     }

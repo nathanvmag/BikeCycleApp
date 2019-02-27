@@ -9,6 +9,11 @@ public class utils {
     {
         Log.d("BikeCycle",tolog.toString());
     }
-    public static void toast(Context ctx,String text){
-        Toast.makeText(ctx,text,Toast.LENGTH_LONG).show();}
+    public static void toast(Context ctx,String text) {
+        try {
+            Toast.makeText(ctx, text, Toast.LENGTH_LONG).show();
+        }catch (Exception ex){
+
+        }
+    }
 }
