@@ -30,7 +30,7 @@
     <RelativeLayout
         android:id="@+id/display"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="350dp"
         android:layout_below="@+id/imworking"
         android:visibility="visible">
 
@@ -80,6 +80,21 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="126dp"
             android:text="Aceitar Solicitação de Coleta"
+            app:bootstrapBrand="info"
+            app:bootstrapSize="lg"
+            app:buttonMode="regular"
+            app:roundedCorners="true"
+            app:showOutline="false" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/aceitaalfa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60dp"
+            android:text="Aceitar Solicitação de Coleta"
+            android:visibility="invisible"
             app:bootstrapBrand="info"
             app:bootstrapSize="lg"
             app:buttonMode="regular"

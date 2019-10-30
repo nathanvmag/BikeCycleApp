@@ -2,6 +2,7 @@ package bikecycle.com.bikecycle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
@@ -26,12 +27,14 @@ public class loginPage extends AppCompatActivity {
     EditText loginTX,passTX;
     //1 entregador 0 cliente
     public int LoginType=1;
-    public static final String basesite="http://bikescycle.com/app/";
+    public static final String basesite="https://bikescycle.com/app/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
         setContentView(R.layout.activity_login_page);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         loading= findViewById(R.id.loadinglogin);
         login=findViewById(R.id.loginlay);
         loading.setVisibility(View.INVISIBLE);
@@ -163,11 +166,13 @@ public class loginPage extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.noInternetLog(getApplicationContext(),login);
+
                 view.setEnabled(true);
 
                 loading.setVisibility(View.INVISIBLE);
                 login.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Erro ao Logar " + new String( responseBody), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Erro ao Logar " , Toast.LENGTH_LONG).show();
             }
         });
 
@@ -223,8 +228,8 @@ public class loginPage extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                Toast.makeText(getApplicationContext(),"Erro ao Logar "+new String(responseBody),Toast.LENGTH_LONG).show();
+                utils.noInternetLog(getApplicationContext(),login);
+                //Toast.makeText(getApplicationContext(),"Erro ao Logar ",Toast.LENGTH_LONG).show();
             }
         });}
     

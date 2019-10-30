@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.MySSLSocketFactory;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 
@@ -17,8 +18,8 @@ import java.net.URL;
 public class HttpUtils {
     private static final String BASE_URL = loginPage.basesite;
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
-    private static SyncHttpClient clientSync= new SyncHttpClient();
+    private static AsyncHttpClient client = new AsyncHttpClient(true,80,443);
+    private static SyncHttpClient clientSync= new SyncHttpClient(true,80,443);
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
@@ -34,6 +35,8 @@ public class HttpUtils {
 
     public static void postByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.setTimeout(60);
+        client.setSSLSocketFactory(MySSLSocketFactory.getFixedSocketFactory());
+
         client.post(url, params, responseHandler);
     }
     public static void postByUrlSync(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

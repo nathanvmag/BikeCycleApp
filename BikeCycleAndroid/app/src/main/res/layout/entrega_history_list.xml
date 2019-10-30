@@ -26,7 +26,11 @@
         android:layout_height="20dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_marginStart="-14dp"
+        android:layout_marginLeft="-14dp"
         android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/imgrl"
+        android:layout_toRightOf="@+id/imgrl"
         app:animated="false"
         app:bootstrapBrand="warning"
         app:bootstrapMaxProgress="4"
@@ -54,6 +58,7 @@
         android:textStyle="bold" />
 
     <RelativeLayout
+        android:id="@+id/imgrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

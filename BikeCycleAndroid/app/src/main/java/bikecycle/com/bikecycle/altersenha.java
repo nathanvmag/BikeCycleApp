@@ -2,6 +2,7 @@ package bikecycle.com.bikecycle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,8 @@ public class altersenha extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_altersenha);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             myId=extras.getString("id");
@@ -73,8 +76,8 @@ public class altersenha extends AppCompatActivity {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                             view.setEnabled(true);
-
-                            Toast.makeText(getApplicationContext(), "Erro ao alterar senha " + responseBody, Toast.LENGTH_LONG).show();
+                            utils.noInternetLog(getApplicationContext(),view);
+                            //Toast.makeText(getApplicationContext(), "Erro ao alterar senha " + responseBody, Toast.LENGTH_LONG).show();
                         }
                     });
                 }

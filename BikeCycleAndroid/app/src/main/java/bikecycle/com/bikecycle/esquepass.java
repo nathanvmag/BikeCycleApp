@@ -2,6 +2,7 @@ package bikecycle.com.bikecycle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.design.widget.FloatingActionButton;
@@ -45,6 +46,8 @@ public class esquepass extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_esquepass);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         try{getSupportActionBar().hide();}catch(Exception e) {}
         cliente= (BootstrapButton)findViewById(R.id.Cliente);
         entregador=findViewById(R.id.entregabutton);
@@ -117,6 +120,8 @@ public class esquepass extends AppCompatActivity {
 
                                Toast.makeText(getApplicationContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
                            }
+                           utils.noInternetLog(getApplicationContext(),view);
+
 
                        }
                    });

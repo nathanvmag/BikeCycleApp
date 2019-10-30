@@ -1,5 +1,6 @@
 package bikecycle.com.bikecycle;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,13 +20,15 @@ public class AvaliarApp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avaliar_app);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         if (getIntent().getExtras()!=null) {
             Bundle extras = getIntent().getExtras();
             myid = extras.getString("id");
             tipe = extras.getString("tipe");
             findViewById(R.id.envia2).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(final View view) {
                     String avaliatx= ((BootstrapEditText)findViewById(R.id.reclamabody2)).getText().toString();
                     float valuenota = ((RatingBar)findViewById(R.id.nota)).getRating();
                     RequestParams rps = new RequestParams();
@@ -52,7 +55,9 @@ public class AvaliarApp extends AppCompatActivity {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            utils.toast(getApplicationContext(),"Falha ao Enviar Avaliação "+ new String(responseBody));
+                            utils.noInternetLog(getApplicationContext(),view);
+
+                            // utils.toast(getApplicationContext(),"Falha ao Enviar Avaliação "+ new String(responseBody));
                         }
                     });
                 }

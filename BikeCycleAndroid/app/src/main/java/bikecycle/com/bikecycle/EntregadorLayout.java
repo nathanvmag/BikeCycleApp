@@ -6,13 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -55,11 +59,12 @@ import static bikecycle.com.bikecycle.loginPage.basesite;
 public class EntregadorLayout extends AppCompatActivity implements  Runnable
 {
 
-    private TextView mTextMessage;
+   // private TextView mTextMessage;
     private RelativeLayout mainlayout,displayout,indisplayout,loading;
     private String myid,myfoto,nome;
     BootstrapButton Aceitar;
     private Handler handler;
+    private int maxPedidos=3;
     boolean inMain=false,inHistory=false;
     int PedidosAtivos=0;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -81,7 +86,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     Aceitar.setEnabled(false);
 
                     ( (TextView)findViewById(R.id.bnvd)).setText("Olá, "+nome+".");
-                    new DownloadImageTask2((BootstrapCircleThumbnail)findViewById(R.id.entregafoto)).execute(basesite+myfoto);
+                    new DownloadImageTask2((BootstrapCircleThumbnail)findViewById(R.id.entregafoto)).execute(basesite+myfoto.trim());
 
                     getState((BootstrapButton)findViewById(R.id.imworking));
                     getdispo();
@@ -94,6 +99,27 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                         }
                     });
                     checkTrab();
+                    RequestParams ques2= new RequestParams();
+                    ques2.add("servID","9734");
+                    ques2.add("id",myid);
+                    HttpUtils.postByUrl(basesite + "server.php", ques2, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            String resp = new String(responseBody);
+                            utils.log("meus max pedido "+(resp));
+                            checkAceitartermos();
+
+                            maxPedidos= Integer.parseInt((resp));
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                            //utils.toast(getApplicationContext(),"Falha ao obter maximos pedidos");
+                        }
+                    });
+
                     Aceitar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
@@ -120,7 +146,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         }
                                                             rp.add("id", myid);
                                                             view.setEnabled(false);
-                                                            if (PedidosAtivos < 3) {
+                                                            if (PedidosAtivos < maxPedidos) {
 
                                                                 HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
                                                                     @Override
@@ -144,7 +170,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                                         view.setEnabled(false);
                                                                         String resp = new String(responseBody);
                                                                         utils.log(resp);
-                                                                        utils.toast(getApplicationContext(), "Falha ao aceitar pedido " + resp);
+                                                                        utils.noInternetLog(getApplicationContext(),view);
+
+                                                                        //utils.toast(getApplicationContext(), "Falha ao aceitar pedido " + resp);
 
                                                                     }
                                                                 });
@@ -160,8 +188,72 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                    utils.noInternetLog(getApplicationContext(),view);
 
                                                 }});
+
+                                            break;
+
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            //No button clicked
+                                            break;
+                                    }
+                                }
+                            };
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            builder.setMessage("Tem certeza que deseja aceitar ?").setPositiveButton("Sim", dialogClickListener)
+                                    .setNegativeButton("Não", dialogClickListener).show();
+
+
+                        }
+                    });
+                    findViewById(R.id.aceitaalfa).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which){
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                                        view.setEnabled(false);
+                                                        if (PedidosAtivos < maxPedidos) {
+                                                            RequestParams rp = new RequestParams();
+                                                            rp.add("id", myid);
+                                                            rp.add("servID","744");
+
+                                                            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                                @Override
+                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                    String resp = new String(responseBody);
+                                                                    utils.log(resp);
+
+                                                                    view.setEnabled(true);
+                                                                    if (resp.equals("OK")) {
+                                                                        findViewById(R.id.navigation_dashboard).callOnClick();
+                                                                        utils.log("Sucesso ao receber o pedido, cliquei nele para mais informações");
+                                                                    } else {
+                                                                        utils.toast(getApplicationContext(), "Falha ao aceitar pedido " + resp);
+
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                    view.setEnabled(false);
+                                                                    String resp = new String(responseBody);
+                                                                    utils.log(resp);
+                                                                    utils.noInternetLog(getApplicationContext(),view);
+
+                                                                    //utils.toast(getApplicationContext(), "Falha ao aceitar pedido " + resp);
+
+                                                                }
+                                                            });
+                                                        } else {
+                                                            utils.toast(getApplicationContext(), "Você já possui "+maxPedidos+" pedidos em andamento, finalize-os primeiro");
+                                                        }
+
 
                                             break;
 
@@ -189,6 +281,13 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     RequestParams rp= new RequestParams();
                     rp.add("servID","88");
                     rp.add("id",myid);
+                    findViewById(R.id.openhistory).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(basesite+"entregador.html")));
+
+                        }
+                    });
                     HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -277,7 +376,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                             layout.findViewById(R.id.reporterror).setVisibility(View.VISIBLE);
                                                             layout.findViewById(R.id.reporterror).setOnClickListener(new View.OnClickListener() {
                                                                 @Override
-                                                                public void onClick(View view) {
+                                                                public void onClick(final View view) {
                                                                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                                                                     LayoutInflater lt = getLayoutInflater();
                                                                     final View ratingalert=lt.inflate(R.layout.reporterror, mainlayout,false);
@@ -309,7 +408,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                                                                                 @Override
                                                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                                    utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
+                                                                                    utils.noInternetLog(getApplicationContext(),view);
+
+                                                                                    //utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
                                                                                 }
                                                                             });
                                                                         }
@@ -339,7 +440,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                                     view.setEnabled(true);
-                                                    Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                    utils.noInternetLog(getApplicationContext(),view);
+
+                                                    // Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
                                                 }
                                             });
 
@@ -359,8 +462,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                        try{     findViewById(R.id.textView2).setVisibility(View.VISIBLE);
                             utils.log("resposta "+new String(responseBody));
+                           utils.noInternetLog(getApplicationContext(),mainlayout);
 
-                            Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
 
                         }catch (Exception e){}}
 
@@ -447,7 +551,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     });
                     findViewById(R.id.altcad).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view) {
+                        public void onClick(final View view) {
                             RequestParams rp= new RequestParams();
                             rp.add("servID","11");
                             rp.add("id",myid);
@@ -471,7 +575,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                     String resp= new String(responseBody);
-                                    Toast.makeText(getApplicationContext(),"Falha ao alterar cadastro "+resp,Toast.LENGTH_LONG).show();
+                                    utils.noInternetLog(getApplicationContext(),view);
+
+                                    // Toast.makeText(getApplicationContext(),"Falha ao alterar cadastro "+resp,Toast.LENGTH_LONG).show();
                                     utils.log("Falhou "+resp);
                                 }
                             });
@@ -492,6 +598,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entregador_layout);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
         {
             @Override
@@ -504,7 +612,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
         loading= findViewById(R.id.loadinglogin);
         handler= new Handler();
         handler.postDelayed(this,2000);
-        mTextMessage = (TextView) findViewById(R.id.message);
+        //mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mainlayout= findViewById(R.id.mainlayout);
@@ -572,7 +680,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(),"Falha ao alterar estado"+new String(responseBody),Toast.LENGTH_LONG).show();
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                //  Toast.makeText(getApplicationContext(),"Falha ao alterar estado"+new String(responseBody),Toast.LENGTH_LONG).show();
             }
         };
 
@@ -619,7 +729,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(),"Falha ao status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Falha ao status "+new String(responseBody),Toast.LENGTH_LONG).show();
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
                 bt.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
                 bt.setShowOutline(true);
                 bt.setText("Indisponível");
@@ -721,7 +833,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                                //Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -735,6 +849,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 try{
                                     int a = Integer.parseInt(new String(responseBody));
+                                    Log.d("entre", a+"  entregas dispo");
                                     ((TextView)findViewById(R.id.dispotext)).setText(a+"");
                                     if(a>0)Aceitar.setEnabled(true);
                                     else Aceitar.setEnabled(false);
@@ -749,9 +864,66 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                                //   Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
                             }
                         });
+                        rp= new RequestParams();
+                        rp.add("servID","776");
+                        rp.add("id",myid);
+                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                try{
+                                    int a = Integer.parseInt(new String(responseBody));
+                                    utils.log("Valor de a "+a);
+                                    findViewById(R.id.aceitaalfa).setVisibility(a==1? View.VISIBLE:View.INVISIBLE);
+                                    utils.log(findViewById(R.id.aceitaalfa).getVisibility());
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                                //   Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        rp= new RequestParams();
+                        rp.add("servID","56");
+                        rp.add("id",myid);
+                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                try{
+                                    int a = Integer.parseInt(new String(responseBody));
+                                    findViewById(R.id.aceitaalfa).setEnabled(a>0);
+                                    ((BootstrapButton)findViewById(R.id.aceitaalfa)).setText(a+ " entregas alfas disponíveis,\n Aceitar?");
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                                //   Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                            }
+                        });
+
                     }
                 }
                 catch(Exception e)
@@ -763,7 +935,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                // utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
             }
         });
 
@@ -785,6 +959,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.noInternetLog(getApplicationContext(),mainlayout);
 
             }
         });
@@ -796,6 +971,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
         rp.add("id",myid);
 
         HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 utils.log("Resultado do check trab "+new String(responseBody));
@@ -808,6 +984,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
                                     //Yes button clicked
+                                   // utils.log("Ok positivo");
                                    serv(1);
                                     break;
 
@@ -820,6 +997,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                     break;
                                 default:
                                     BootstrapButton bt2= ((BootstrapButton)findViewById(R.id.imworking));
+
                                     if(!bt2.isShowOutline())bt2.callOnClick();
                                     break;
                             }
@@ -830,7 +1008,14 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     String str = fmt.format(data);
                     AlertDialog.Builder builder = new AlertDialog.Builder(EntregadorLayout.this);
                     builder.setMessage("Você confirma a sua presença hoje, dia: "+str).setPositiveButton("Sim", dialogClickListener)
-                            .setNegativeButton("Não", dialogClickListener).show();
+                            .setNegativeButton("Não", dialogClickListener).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            serv(0);
+                            BootstrapButton bt3= ((BootstrapButton)findViewById(R.id.imworking));
+                            if(!bt3.isShowOutline())bt3.callOnClick();
+                        }
+                    }).show();
                 }
 
                 else utils.log("Confirmou trabalho");
@@ -840,7 +1025,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getApplicationContext(),"Erro ao obter confirmação "+new String(responseBody));
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                // utils.toast(getApplicationContext(),"Erro ao obter confirmação "+new String(responseBody));
                 utils.log("Erro ao obter confirmação  pelo erro "+new String(responseBody));
 
             }
@@ -857,12 +1044,15 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 utils.toast(getApplicationContext(),"Sucesso ao confirmar ");
+                utils.log("confirmar "+new String(responseBody));
 
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.toast(getApplicationContext(),"Falha ao confirmar trabalho "+ new String(responseBody));
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                // utils.toast(getApplicationContext(),"Falha ao confirmar trabalho "+ new String(responseBody));
             }
         });
     }
@@ -883,8 +1073,68 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                utils.log("Falha com a token nova"+new String(responseBody));
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                //utils.log("Falha com a token nova"+new String(responseBody));
             }
         });
+    }
+    void checkAceitartermos()
+    { SharedPreferences pm = getSharedPreferences("pref",MODE_PRIVATE);
+        final SharedPreferences.Editor editor= pm.edit();
+        if(!pm.contains("aceitatermos")){
+            LayoutInflater inflater = (LayoutInflater)
+                    getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.aceita_termos, null);
+
+            // create the popup window
+            int width = LinearLayout.LayoutParams.MATCH_PARENT;
+            int height = LinearLayout.LayoutParams.MATCH_PARENT;
+            boolean focusable = true; // lets taps outside the popup also dismiss it
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+            // show the popup window
+            // which view you pass in doesn't matter, it is only used for the window tolken
+            popupWindow.showAtLocation(mainlayout, Gravity.CENTER, 0, 0);
+            popupView.findViewById(R.id.aceitatermostodos).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    popupWindow.dismiss();
+                                    editor.putString("aceitatermos","ah");
+                                    editor.commit();
+                                    editor.apply();
+
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }}};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setMessage("Ao aceitar você garante que leu e está ciente dos termos de uso de política de privacidade.").setPositiveButton("Continuar", dialogClickListener)
+                            .setNegativeButton("Não", dialogClickListener).create().show();
+
+                }
+            });
+            popupView.findViewById(R.id.bnvd7).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(basesite+"politicaprivacidade.pdf")));
+
+                }
+            });
+            popupView.findViewById(R.id.bnvd6).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(basesite+"termosusuario.pdf")));
+
+                }
+            });
+        }
     }
 }

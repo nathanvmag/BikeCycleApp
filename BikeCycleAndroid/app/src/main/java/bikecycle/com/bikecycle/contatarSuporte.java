@@ -1,6 +1,7 @@
 package bikecycle.com.bikecycle;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ public class contatarSuporte extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contatar_suporte);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         if (getIntent().getExtras()!=null)
         {
             Bundle extras = getIntent().getExtras();
@@ -28,7 +31,7 @@ public class contatarSuporte extends AppCompatActivity {
             tipe= extras.getString("tipe");
             findViewById(R.id.envia).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(final View view) {
                     RequestParams rps = new RequestParams();
                     rps.add("servID","887");
                     rps.add("id",myid+"");
@@ -53,7 +56,9 @@ public class contatarSuporte extends AppCompatActivity {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            utils.toast(getApplicationContext(),"Falha ao Enviar mensagem "+ new String(responseBody));
+                            utils.noInternetLog(getApplicationContext(),view);
+
+                            //   utils.toast(getApplicationContext(),"Falha ao Enviar mensagem "+ new String(responseBody));
                         }
                     });
                 }
