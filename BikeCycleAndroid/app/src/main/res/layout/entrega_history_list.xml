@@ -80,9 +80,9 @@
             android:layout_centerVertical="true"
             android:gravity="center"
 
-            android:text="60"
+            android:text="12900"
             android:textColor="@color/bootstrap_brand_info"
-            android:textSize="24sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
     </RelativeLayout>

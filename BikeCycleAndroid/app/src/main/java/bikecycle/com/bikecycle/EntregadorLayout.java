@@ -62,9 +62,10 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
    // private TextView mTextMessage;
     private RelativeLayout mainlayout,displayout,indisplayout,loading;
     private String myid,myfoto,nome;
-    BootstrapButton Aceitar;
+    BootstrapButton Aceitar,aceitaalfabt;
     private Handler handler;
     private int maxPedidos=3;
+    int oldwhidt,oldheight;
     boolean inMain=false,inHistory=false;
     int PedidosAtivos=0;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -82,9 +83,15 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     displayout= findViewById(R.id.display);
                     indisplayout.setVisibility(View.INVISIBLE);
                     displayout.setVisibility(View.INVISIBLE);
+                    //findViewById(R.id.solicitaalfa).setVisibility(View.INVISIBLE);
                     Aceitar= findViewById(R.id.aceitarent);
-                    Aceitar.setEnabled(false);
 
+                    Aceitar.setEnabled(false);
+                    aceitaalfabt= findViewById(R.id.aceitaalfa);
+                    aceitaalfabt.setEnabled(false);
+                    aceitaalfabt.setVisibility(View.INVISIBLE);
+                    oldheight= aceitaalfabt.getHeight();
+                    oldwhidt= aceitaalfabt.getWidth();
                     ( (TextView)findViewById(R.id.bnvd)).setText("Olá, "+nome+".");
                     new DownloadImageTask2((BootstrapCircleThumbnail)findViewById(R.id.entregafoto)).execute(basesite+myfoto.trim());
 
@@ -295,7 +302,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             utils.log("resposta "+resp);
                             try {
                                 String[] modules= resp.split("%");
-                                for(int i=0;i<modules.length;i++)
+                                for(int i=0;i<((modules.length>15)?15:modules.length);i++)
                                 {
                                     String[] infs= modules[i].split("!");
                                     Entrega e = new Entrega(infs[1],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),1,infs[6]);
@@ -367,10 +374,49 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                             ((TextView)layout.findViewById(R.id.infonum2)).setText("Complemento: "+ends[5]);
 
                                                         }
+
                                                         catch (Exception e)
                                                         {
 
                                                         }
+                                                        final BootstrapButton chegoentrega= layout.findViewById(R.id.saiuent);
+                                                        final BootstrapButton finalizaPed= layout.findViewById(R.id.finalizaped);
+                                                        if(entreg.statusid==1)
+                                                        {
+                                                            chegoentrega.setShowOutline(false);
+                                                        }
+                                                        else if(entreg.statusid>=2)
+                                                        {
+                                                            chegoentrega.setShowOutline(true);
+                                                            chegoentrega.setText("Pedido Enviado");
+                                                            chegoentrega.setEnabled(false);
+                                                        }
+                                                        if(entreg.statusid==3)
+                                                        {
+                                                            finalizaPed.setText("Pedido Finalizado");
+                                                            finalizaPed.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                                                            finalizaPed.setShowOutline(true);
+                                                            finalizaPed.setEnabled(false);
+                                                        }
+                                                        chegoentrega.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                changest(2,entreg.entregaid,entreg.empresaID,entreg.statusid,2);
+                                                                pw.dismiss();
+
+                                                                findViewById(R.id.navigation_dashboard).callOnClick();
+                                                            }
+                                                        });
+                                                        finalizaPed.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                changest(3,entreg.entregaid,entreg.empresaID,entreg.statusid,3);
+                                                                pw.dismiss();
+
+                                                                findViewById(R.id.navigation_dashboard).callOnClick();
+
+                                                            }
+                                                        });
                                                         if(entreg.statusid==1||entreg.statusid==2)
                                                         {
                                                             layout.findViewById(R.id.reporterror).setVisibility(View.VISIBLE);
@@ -594,6 +640,30 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
     public void onBackPressed() {
         // Do Here what ever you want do on back press;
     }
+    void changest(int st ,int entrid,String clientid,int oldst,int nst)
+    {
+        RequestParams rp= new RequestParams();
+        rp.add("servID","574");
+        rp.add("entregaID",entrid+"");
+        rp.add("clientid",clientid+"");
+        rp.add("oldst",oldst+"");
+        rp.add("nst",nst+"");
+        rp.add("entregadorid",myid+"");
+
+        rp.add("state",st+"");
+        HttpUtils.postByUrl(basesite+"application.php", rp, new AsyncHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                utils.toast(getApplicationContext(),"Sucesso ao mudar status da entrega, aguarde o cliente confirmar.");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+
+        }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -872,15 +942,58 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                         rp= new RequestParams();
                         rp.add("servID","776");
                         rp.add("id",myid);
+                       // utils.log(findViewById(R.id.aceitaalfa).getVisibility());
+
                         HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 try{
                                     int a = Integer.parseInt(new String(responseBody));
                                     utils.log("Valor de a "+a);
-                                    findViewById(R.id.aceitaalfa).setVisibility(a==1? View.VISIBLE:View.INVISIBLE);
+
                                     utils.log(findViewById(R.id.aceitaalfa).getVisibility());
+                                 //   findViewById(R.id.aceitaalfa).setVisibility(View.GONE);
+                                 // findViewById(R.id.aceitaalfa).setVisibility(a==1? View.VISIBLE:View.INVISIBLE);
+                                if(a==1){
+                                    aceitaalfabt.setVisibility(View.VISIBLE);
+                                    RequestParams rp= new RequestParams();
+                                    rp.add("servID","56");
+                                    rp.add("id",myid);
+                                    HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                        @Override
+                                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                            try{
+                                                int a = Integer.parseInt(new String(responseBody));
 
+                                                findViewById(R.id.aceitaalfa).setEnabled(a>0);
+                                                //findViewById(R.id.aceitaalfa).setVisibility(a>0?View.VISIBLE:View.INVISIBLE);
+
+                                                ((BootstrapButton)findViewById(R.id.aceitaalfa)).setText(a+ " entregas alfas disponíveis,\n Aceitar?");
+
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                            utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                                            //   Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                                else{
+
+                                    aceitaalfabt.setVisibility(View.INVISIBLE);
+                                   // aceitaalfabt.setWidth(0);
+                                    //aceitaalfabt.setHeight(0);
+                                    utils.log("veio aqui");
+                                }
                                 }
                                 catch (Exception e)
                                 {
@@ -897,32 +1010,7 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                             }
                         });
 
-                        rp= new RequestParams();
-                        rp.add("servID","56");
-                        rp.add("id",myid);
-                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                try{
-                                    int a = Integer.parseInt(new String(responseBody));
-                                    findViewById(R.id.aceitaalfa).setEnabled(a>0);
-                                    ((BootstrapButton)findViewById(R.id.aceitaalfa)).setText(a+ " entregas alfas disponíveis,\n Aceitar?");
 
-                                }
-                                catch (Exception e)
-                                {
-                                    Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
-
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                utils.noInternetLog(getApplicationContext(),mainlayout);
-
-                                //   Toast.makeText(getApplicationContext(),"Falha ao obter pedidos ativos "+new String(responseBody),Toast.LENGTH_LONG).show();
-                            }
-                        });
 
                     }
                 }

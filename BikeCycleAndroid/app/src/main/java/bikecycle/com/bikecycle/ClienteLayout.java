@@ -1,6 +1,7 @@
 package bikecycle.com.bikecycle;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -34,6 +37,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
 import com.beardedhen.androidbootstrap.BootstrapProgressBar;
 import com.beardedhen.androidbootstrap.api.defaults.DefaultBootstrapBrand;
+import com.google.android.gms.common.api.Api;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -47,6 +51,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 import static bikecycle.com.bikecycle.loginPage.basesite;
+import static java.lang.Integer.parseInt;
 
 public class ClienteLayout extends AppCompatActivity implements Runnable
 {
@@ -322,6 +327,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     inMain=true;
 
                     check30min(mainlayout);
+                    checksolicitacoes();
+
                     //((ImageView)findViewById(R.id.clientlogo)).setImageDrawable(clientlogo==null?getResources().getDrawable(R.drawable.logo):clientlogo);
                     return true;
                 case R.id.navigation_dashboard2:
@@ -330,6 +337,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     final ListView lv= (ListView)findViewById(R.id.entregalist);
                     final List<Entrega> ents= new ArrayList<>();
                     inHistory=true;
+                    checksolicitacoes();
 
 
                             RequestParams rp= new RequestParams();
@@ -355,7 +363,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 for(int i=0;i<modules.length;i++)
                                 {
                                     String[] infs= modules[i].split("!");
-                                    Entrega e = new Entrega(infs[2],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),0,infs[6]);
+                                    Entrega e = new Entrega(infs[2],infs[4],infs[5], parseInt(infs[3]), parseInt(infs[0]),0,infs[6]);
                                     ents.add(e);
                                     tx.setVisibility(View.INVISIBLE);
 
@@ -377,30 +385,60 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     switch (which){
                                                         case DialogInterface.BUTTON_POSITIVE:
-                                                            RequestParams rp = new RequestParams();
-                                                            rp.add("servID","445");
-                                                            rp.add("entid",entrega.entregaid+"");
-                                                            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                            AlertDialog.Builder builder2 = new AlertDialog.Builder(view.getContext());
+                                                            builder2.setTitle("Motivo e o número da entrega em seu sistema (caso exista)");
+
+                                                            final EditText input = new EditText(view.getContext());
+                                                            input.setInputType(InputType.TYPE_CLASS_TEXT );
+                                                            builder2.setView(input);
+
+                                                            builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                                 @Override
-                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                                    String resp= new String(responseBody);
-                                                                    if(resp.equals("OK"))
-                                                                    {
-                                                                        findViewById(R.id.navigation_dashboard2).callOnClick();
-                                                                        utils.toast(getApplicationContext(),"Sucesso ao cancelar o pedido ");
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                     String motivo =input.getText().toString();
+                                                                     if(motivo.length()>50)
+                                                                     {
+                                                                         RequestParams rp = new RequestParams();
+                                                                         rp.add("servID","445");
+                                                                         rp.add("entid",entrega.entregaid+"");
+                                                                         rp.add("id",myid);
+                                                                         rp.add("motivo",motivo);
+                                                                         HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                                             @Override
+                                                                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                                 String resp= new String(responseBody);
+                                                                                 if(resp.equals("OK"))
+                                                                                 {
+                                                                                     findViewById(R.id.navigation_dashboard2).callOnClick();
+                                                                                     utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
 
-                                                                    }
-                                                                    else {
-                                                                        utils.toast(getApplicationContext(),"Falha ao cancelar o pedido "+resp);
-                                                                    }
+                                                                                 }
+                                                                                 else {
+                                                                                     utils.toast(view.getContext(),"Falha ao cancelar o pedido "+resp);
+                                                                                 }
 
-                                                                }
+                                                                             }
 
-                                                                @Override
-                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                    utils.toast(getApplicationContext(),"Falha ao cancelar o pedido "+new String(responseBody));
+                                                                             @Override
+                                                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                                 utils.toast(view.getContext(),"Falha ao cancelar o pedido "+new String(responseBody));
+                                                                             }
+                                                                         });
+                                                                     }else {
+                                                                         utils.toast(view.getContext(),"Por favor digite ao menos 50 caracteres");
+                                                                     }
                                                                 }
                                                             });
+                                                            builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    dialog.cancel();
+                                                                }
+                                                            });
+
+                                                            builder2.show();
+
+
 
                                                             break;
 
@@ -783,6 +821,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         }
         else if(inHistory){
             findViewById(R.id.navigation_dashboard2).callOnClick();
+
             handler.postDelayed(this,60000);
 
 
@@ -793,6 +832,115 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         }
 
     }
+    Boolean solicitando=false;
+    void checksolicitacoes()
+    {
+        final RequestParams requestParams= new RequestParams();
+        requestParams.add("servID","573");
+        requestParams.add("id",myid);
+        HttpUtils.postByUrl(basesite + "application.php", requestParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String resp= new String(responseBody);
+                utils.log("LOG DO solicita "+resp);
+                if(!resp.equals("")){
+                    try{
+                        if(!solicitando) {
+                            final String[] info = resp.split("%")[0].split("!");
+                            solicitando=true;
+                            utils.log("AQUI TEMMM");
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            RequestParams rps= new RequestParams();
+                                            rps.add("servID","993");
+                                            rps.add("entreid",info[1]);
+                                            rps.add("state",info[5]);
+                                            rps.add("nota",5+"");
+                                            solicitando=false;
+                                            HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    RequestParams rps= new RequestParams();
+                                                    rps.add("servID","447");
+                                                    rps.add("id",info[0]);
+                                                    solicitando=false;
+
+                                                    HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+
+                                                        @Override
+                                                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                            utils.toast(getBaseContext(),"Sucesso ao alterar status de entrega");
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                                                }
+                                            });
+
+                                            break;
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            rps= new RequestParams();
+                                            rps.add("servID","447");
+                                            rps.add("id",info[0]);
+                                            solicitando=false;
+
+                                            HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                                                }
+                                            });
+                                            break;
+                                            default:
+                                                solicitando=false;
+
+                                                break;
+                                    }}};
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ClienteLayout.this);
+
+                            String[] histStatus= new String[]{"Procurando Entregador","Aceito, aguarde o entregador","Enviado para entrega","Pedido finalizado"};
+
+                            builder.setMessage("O entregador "+ info[6] +" solicitou a troca de status da entrega nº "+ info[1]+ " \nDe: "+histStatus[parseInt(info[4])]+" \nPara: "+ histStatus[parseInt(info[5])]+"\nVocê confirma ?").setPositiveButton("Sim", dialogClickListener)
+                                    .setNegativeButton("Não", dialogClickListener).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialogInterface) {
+                                    solicitando=false;
+                                    utils.log("Cancelado");
+
+                                }
+                            }).create().show();
+
+                        }
+                }catch (Exception ex){}
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                utils.noInternetLog(getApplicationContext(),mainlayout);
+
+                // utils.toast(getApplicationContext(),"Falha ao obter dados do servidor");
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -802,6 +950,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
     void getdispo()
     {
+        checksolicitacoes();
+
         RequestParams requestParams= new RequestParams();
         requestParams.add("servID","7783");
         requestParams.add("id",myid);
@@ -812,7 +962,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                 String resp= new String(responseBody);
                 try{
-                    int response = Integer.parseInt(resp);
+                    int response = parseInt(resp);
                     if(response>0) {
                         findViewById(R.id.solicitaalocado).setVisibility(View.VISIBLE);
                         findViewById(R.id.permitavulso).setVisibility(View.VISIBLE);
@@ -849,7 +999,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try{
-                    int a = Integer.parseInt(new String(responseBody));
+                    int a = parseInt(new String(responseBody));
                     ((TextView)findViewById(R.id.numsolicita)).setText(""+a);
 
                 }
@@ -875,7 +1025,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try{
-                    entregadoresDisponiveis = Integer.parseInt(new String(responseBody));
+                    entregadoresDisponiveis = parseInt(new String(responseBody));
                     ((TextView)findViewById(R.id.numsolicita2)).setText(entregadoresDisponiveis+"");
 
                 }
@@ -900,7 +1050,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try{
-                    int v = Integer.parseInt(new String(responseBody));
+                    int v = parseInt(new String(responseBody));
                     findViewById(R.id.solicitaalfa).setVisibility(v==0?View.INVISIBLE:View.VISIBLE);
 
                 }
@@ -980,7 +1130,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                         for(int i=0;i<modules.length;i++)
                         {
                             String[] infs= modules[i].split("!");
-                            final Entrega e = new Entrega(infs[2],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),0,infs[6]);
+                            final Entrega e = new Entrega(infs[2],infs[4],infs[5], parseInt(infs[3]), parseInt(infs[0]),0,infs[6]);
                             utils.log("Hora de inicio "+ e.starthora);
                             if(e.statusid!=3&&e.statusid!=0)
                             {
@@ -989,8 +1139,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 Date date2 = new Date();
                                 String now= sdf.format(date2);
                                 utils.log("hora atual "+now);
-                                int atualminutes = Integer.parseInt( now.split(":")[0])*60+ Integer.parseInt( now.split(":")[1]);
-                                int iniciominutes= Integer.parseInt( e.starthora.split(":")[0])*60+ Integer.parseInt( e.starthora.split(":")[1]);
+                                int atualminutes = parseInt( now.split(":")[0])*60+ parseInt( now.split(":")[1]);
+                                int iniciominutes= parseInt( e.starthora.split(":")[0])*60+ parseInt( e.starthora.split(":")[1]);
                                 int result = atualminutes-iniciominutes;
                                 utils.log("Minutos resultantes "+result);
                                 if(result>=30)
