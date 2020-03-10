@@ -41,15 +41,20 @@ public class entregaAdpter extends BaseAdapter {
         View v= ((Activity)viewGroup.getContext()) .getLayoutInflater().inflate(R.layout.entrega_history_list,viewGroup,false);
         Entrega ent= entre.get(i);
         ((TextView)v.findViewById(R.id.statustx)).setText(ent.status[ent.statusid]);
+         utils.log("Status da entrega "+ ent.statusid);
         ((TextView)v.findViewById(R.id.datast)).setText(ent.dataa);
         ((TextView)v.findViewById(R.id.horast)).setText(ent.starthora);
         ((TextView)v.findViewById(R.id.pednum)).setText(""+ent.entregaid);
         ((TextView)v.findViewById(R.id.alocado)).setText((ent.alocada.equals("0")?"Avulso":(ent.alocada.equals("1")?"Alocada":"Alfa")));
         BootstrapProgressBar progressBar= (BootstrapProgressBar)v.findViewById(R.id.progbar);
-        progressBar.setProgress(ent.statusid+1);
+
+        progressBar.setProgress(ent.statusid==4?4: ent.statusid+1);
         if(ent.statusid==0)progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);
         else if(ent.statusid<3)progressBar.setBootstrapBrand(DefaultBootstrapBrand.INFO);
         else progressBar.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+        if(ent.statusid==4)
+            progressBar.setBootstrapBrand(DefaultBootstrapBrand.DANGER);
+
         return v;
     }
 }

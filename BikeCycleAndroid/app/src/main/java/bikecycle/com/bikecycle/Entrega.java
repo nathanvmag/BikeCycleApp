@@ -16,10 +16,10 @@ public class Entrega {
         alocada= alo;
         if(md==0)
         {
-            status= new String[]{"Procurando Entregador","Aceito, aguarde o entregador","Enviado para entrega","Pedido finalizado"};
+            status= new String[]{"Procurando Entregador","Aceito, aguarde o entregador","Enviado para entrega","Pedido finalizado","Cancelado"};
         }
         else{
-            status= new String[]{"","Aguardando chegada ao local","Indo para entrega","Pedido finalizado"};
+            status= new String[]{"","Aguardando chegada ao local","Indo para entrega","Pedido finalizado","Cancelado"};
 
         }
 

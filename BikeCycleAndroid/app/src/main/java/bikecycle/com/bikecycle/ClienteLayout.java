@@ -396,7 +396,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                      String motivo =input.getText().toString();
-                                                                     if(motivo.length()>50)
+                                                                     if(motivo.length()>=25)
                                                                      {
                                                                          RequestParams rp = new RequestParams();
                                                                          rp.add("servID","445");
@@ -425,7 +425,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                              }
                                                                          });
                                                                      }else {
-                                                                         utils.toast(view.getContext(),"Por favor digite ao menos 50 caracteres");
+                                                                         utils.toast(view.getContext(),"Por favor digite ao menos 25 caracteres");
                                                                      }
                                                                 }
                                                             });
@@ -452,6 +452,82 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                             builder.setMessage("Você tem certeza que deseja cancelar esse pedido ?").setPositiveButton("Sim", dialogClickListener)
                                                     .setNegativeButton("Não", dialogClickListener).show();
                                         }
+                                        else  if(entrega.statusid==2)
+                                        {
+                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    switch (which){
+                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                            AlertDialog.Builder builder2 = new AlertDialog.Builder(view.getContext());
+                                                            builder2.setTitle("Motivo e o número da entrega em seu sistema (caso exista)");
+
+                                                            final EditText input = new EditText(view.getContext());
+                                                            input.setInputType(InputType.TYPE_CLASS_TEXT );
+                                                            builder2.setView(input);
+
+                                                            builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    String motivo =input.getText().toString();
+                                                                    if(motivo.length()>50)
+                                                                    {
+                                                                        RequestParams rp = new RequestParams();
+                                                                        rp.add("servID","445");
+                                                                        rp.add("entid",entrega.entregaid+"");
+                                                                        rp.add("id",myid);
+                                                                        rp.add("motivo",motivo);
+                                                                        rp.add("cobrada","1");
+                                                                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                                                                            @Override
+                                                                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                                String resp= new String(responseBody);
+                                                                                if(resp.equals("OK"))
+                                                                                {
+                                                                                    findViewById(R.id.navigation_dashboard2).callOnClick();
+                                                                                    utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
+
+                                                                                }
+                                                                                else {
+                                                                                    utils.toast(view.getContext(),"Falha ao cancelar o pedido "+resp);
+                                                                                }
+
+                                                                            }
+
+                                                                            @Override
+                                                                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                                utils.toast(view.getContext(),"Falha ao cancelar o pedido "+new String(responseBody));
+                                                                            }
+                                                                        });
+                                                                    }else {
+                                                                        utils.toast(view.getContext(),"Por favor digite ao menos 50 caracteres");
+                                                                    }
+                                                                }
+                                                            });
+                                                            builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    dialog.cancel();
+                                                                }
+                                                            });
+
+                                                            builder2.show();
+
+
+
+                                                            break;
+
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                            break;
+                                                    }
+                                                }
+                                            };
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                            builder.setMessage("Você tem certeza que deseja cancelar esse pedido ? Este cancelamento será cobrado.").setPositiveButton("Sim", dialogClickListener)
+                                                    .setNegativeButton("Não", dialogClickListener).show();
+                                        }
+
                                         return false;
                                     }
                                 });
@@ -1132,7 +1208,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                             String[] infs= modules[i].split("!");
                             final Entrega e = new Entrega(infs[2],infs[4],infs[5], parseInt(infs[3]), parseInt(infs[0]),0,infs[6]);
                             utils.log("Hora de inicio "+ e.starthora);
-                            if(e.statusid!=3&&e.statusid!=0)
+                            if(e.statusid!=3&&e.statusid!=0&&e.statusid!=4)
                             {
                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                                 Date date = sdf.parse(e.starthora);

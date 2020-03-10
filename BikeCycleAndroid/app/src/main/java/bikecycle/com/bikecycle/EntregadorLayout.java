@@ -305,7 +305,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 for(int i=0;i<((modules.length>15)?15:modules.length);i++)
                                 {
                                     String[] infs= modules[i].split("!");
+
                                     Entrega e = new Entrega(infs[1],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),1,infs[6]);
+                                    if(e.statusid==4)continue;
                                     entregas.add(e);
                                     findViewById(R.id.textView2).setVisibility(View.INVISIBLE);
 
@@ -1095,15 +1097,9 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                     Date data = Calendar.getInstance().getTime();
                     String str = fmt.format(data);
                     AlertDialog.Builder builder = new AlertDialog.Builder(EntregadorLayout.this);
-                    builder.setMessage("Você confirma a sua presença hoje, dia: "+str).setPositiveButton("Sim", dialogClickListener)
-                            .setNegativeButton("Não", dialogClickListener).setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialogInterface) {
-                            serv(0);
-                            BootstrapButton bt3= ((BootstrapButton)findViewById(R.id.imworking));
-                            if(!bt3.isShowOutline())bt3.callOnClick();
-                        }
-                    }).show();
+                    builder.setMessage("Você confirma a sua presença hoje, dia: "+str +" Caso sua resposta seja não outro entregador será convidado.").setPositiveButton("Sim", dialogClickListener)
+                            .setNegativeButton("Não", dialogClickListener).setCancelable(false).
+                            show();
                 }
 
                 else utils.log("Confirmou trabalho");
