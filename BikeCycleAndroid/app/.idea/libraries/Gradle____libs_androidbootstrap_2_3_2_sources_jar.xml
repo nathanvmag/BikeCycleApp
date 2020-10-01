@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: __local_aars__:D.\GitHub\bikecycleapp\BikeCycleAndroid\app\libs\androidbootstrap-2.3.2-sources.jar:unspecified@jar">
+  <library name="Gradle: ./libs/androidbootstrap-2.3.2-sources.jar">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/libs/androidbootstrap-2.3.2-sources.jar!/" />
     </CLASSES>

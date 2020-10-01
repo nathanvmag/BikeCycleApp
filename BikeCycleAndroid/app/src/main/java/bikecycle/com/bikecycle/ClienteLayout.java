@@ -326,8 +326,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     });
                     inMain=true;
 
-                    check30min(mainlayout);
-                    checksolicitacoes();
+                    //check30min(mainlayout);
+                    //checksolicitacoes();
 
                     //((ImageView)findViewById(R.id.clientlogo)).setImageDrawable(clientlogo==null?getResources().getDrawable(R.drawable.logo):clientlogo);
                     return true;
@@ -337,7 +337,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                     final ListView lv= (ListView)findViewById(R.id.entregalist);
                     final List<Entrega> ents= new ArrayList<>();
                     inHistory=true;
-                    checksolicitacoes();
+                    //checksolicitacoes();
 
 
                             RequestParams rp= new RequestParams();
@@ -459,9 +459,9 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     switch (which){
                                                         case DialogInterface.BUTTON_POSITIVE:
+
                                                             AlertDialog.Builder builder2 = new AlertDialog.Builder(view.getContext());
                                                             builder2.setTitle("Motivo e o número da entrega em seu sistema (caso exista)");
-
                                                             final EditText input = new EditText(view.getContext());
                                                             input.setInputType(InputType.TYPE_CLASS_TEXT );
                                                             builder2.setView(input);
@@ -469,39 +469,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                             builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
-                                                                    String motivo =input.getText().toString();
-                                                                    if(motivo.length()>50)
-                                                                    {
-                                                                        RequestParams rp = new RequestParams();
-                                                                        rp.add("servID","445");
-                                                                        rp.add("entid",entrega.entregaid+"");
-                                                                        rp.add("id",myid);
-                                                                        rp.add("motivo",motivo);
-                                                                        rp.add("cobrada","1");
-                                                                        HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
-                                                                            @Override
-                                                                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                                                String resp= new String(responseBody);
-                                                                                if(resp.equals("OK"))
-                                                                                {
-                                                                                    findViewById(R.id.navigation_dashboard2).callOnClick();
-                                                                                    utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
+                                                                    cancelaPedido(input.getText().toString(),entrega.entregaid,view);
 
-                                                                                }
-                                                                                else {
-                                                                                    utils.toast(view.getContext(),"Falha ao cancelar o pedido "+resp);
-                                                                                }
-
-                                                                            }
-
-                                                                            @Override
-                                                                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                                utils.toast(view.getContext(),"Falha ao cancelar o pedido "+new String(responseBody));
-                                                                            }
-                                                                        });
-                                                                    }else {
-                                                                        utils.toast(view.getContext(),"Por favor digite ao menos 50 caracteres");
-                                                                    }
                                                                 }
                                                             });
                                                             builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -848,6 +817,43 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         super.onResume();
 
     }
+    void cancelaPedido(String motivo, int entregaid, final View view)
+    {
+
+        if(motivo.length()>20)
+        {
+            RequestParams rp = new RequestParams();
+            rp.add("servID","445");
+            rp.add("entid",entregaid+"");
+            rp.add("id",myid);
+            rp.add("motivo",motivo);
+            rp.add("cobrada","1");
+            HttpUtils.postByUrl(basesite + "application.php", rp, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String resp= new String(responseBody);
+                    if(resp.equals("OK"))
+                    {
+                        findViewById(R.id.navigation_dashboard2).callOnClick();
+                        utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
+
+                    }
+                    else {
+                        utils.toast(view.getContext(),"Falha ao cancelar o pedido "+resp);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    utils.toast(view.getContext(),"Falha ao cancelar o pedido "+new String(responseBody));
+                }
+            });
+        }else {
+            utils.toast(view.getContext(),"Por favor digite ao menos 20 caracteres");
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1026,7 +1032,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
     void getdispo()
     {
-        checksolicitacoes();
+       // checksolicitacoes();
 
         RequestParams requestParams= new RequestParams();
         requestParams.add("servID","7783");

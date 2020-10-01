@@ -403,8 +403,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         chegoentrega.setOnClickListener(new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View view) {
-                                                                changest(2,entreg.entregaid,entreg.empresaID,entreg.statusid,2);
-                                                                pw.dismiss();
+                                                               // changest(2,entreg.entregaid,entreg.empresaID,entreg.statusid,2);
+                                                               // pw.dismiss();
 
                                                                 findViewById(R.id.navigation_dashboard).callOnClick();
                                                             }
@@ -412,10 +412,10 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         finalizaPed.setOnClickListener(new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View view) {
-                                                                changest(3,entreg.entregaid,entreg.empresaID,entreg.statusid,3);
-                                                                pw.dismiss();
+                                                                //changest(3,entreg.entregaid,entreg.empresaID,entreg.statusid,3);
+                                                                //pw.dismiss();
 
-                                                                findViewById(R.id.navigation_dashboard).callOnClick();
+                                                                //findViewById(R.id.navigation_dashboard).callOnClick();
 
                                                             }
                                                         });

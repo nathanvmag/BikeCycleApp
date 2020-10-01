@@ -82,36 +82,34 @@ public class esquepass extends AppCompatActivity {
                    rp.add("email",emailforgor);
                    rp.add("tipe",recoveType+"");
 
-                   HttpUtils.postByUrl(loginPage.basesite+"application.php", rp, new JsonHttpResponseHandler() {
+                   HttpUtils.postByUrl(loginPage.basesite+"application.php", rp, new AsyncHttpResponseHandler() {
                        @Override
-                       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                       public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
                            view.setEnabled(true);
                            Log.d("eai", "onSuccess: EAIIIIIIIIII");
-                           String Result = response.toString();
+                           String Result = new String(responseBody);
                            Log.d("asd", " A resposta é  : " + Result +"  "+Result.equals("OK"));
                            if(Result.equals("OK"))
                            {
-                               Log.d("asd", "onSuccess: SUCESOO");
+                               Toast.makeText(getApplicationContext(),"Sucesso ao enviar o email, olhe sua caixa de mensagem",Toast.LENGTH_LONG).show();
                            }
                            else{
-                               Log.d("asd", "DEU ERROOOOOW : " + response);
+                               Log.d("asd", "DEU ERROOOOOW : " + Result);
 
                                Toast.makeText(getApplicationContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
                            }
 
                        }
 
-
-
                        @Override
-                       public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                       public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                            view.setEnabled(true);
-                           Log.d("eai", "onSuccess: EAIIIIIIIIII");
-                           String Result = responseString.toString();
-                           Log.d("asd", " A resposta é  : " + Result +"  "+Result.equals("OK"));
-                           if(Result.equals("OK"))
+                           Log.d("eai", "fail "+statusCode);
+                           Log.d("eaiii",error.toString());
+                           String responseString = new String(responseBody);
+                           Log.d("asd", " A resposta é  : " + responseString +"  "+responseString.equals("OK"));
+                           if(responseString.equals("OK"))
                            {
                                Toast.makeText(getApplicationContext(),"Sucesso ao enviar o email, olhe sua caixa de mensagem",Toast.LENGTH_LONG).show();
                            }
@@ -121,9 +119,10 @@ public class esquepass extends AppCompatActivity {
                                Toast.makeText(getApplicationContext(),"Esse email não pertence a nenhuma conta registrada",Toast.LENGTH_LONG).show();
                            }
                            utils.noInternetLog(getApplicationContext(),view);
-
-
                        }
+
+
+
                    });
                    view.setEnabled(false);
 
