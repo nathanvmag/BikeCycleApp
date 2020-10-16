@@ -383,6 +383,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         }
                                                         final BootstrapButton chegoentrega= layout.findViewById(R.id.saiuent);
                                                         final BootstrapButton finalizaPed= layout.findViewById(R.id.finalizaped);
+                                                        chegoentrega.setVisibility(View.INVISIBLE);
+                                                        finalizaPed.setVisibility(View.INVISIBLE);
                                                         if(entreg.statusid==1)
                                                         {
                                                             chegoentrega.setShowOutline(false);

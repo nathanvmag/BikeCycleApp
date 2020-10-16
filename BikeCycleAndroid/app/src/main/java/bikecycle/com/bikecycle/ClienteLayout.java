@@ -28,6 +28,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -386,17 +388,33 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     switch (which){
                                                         case DialogInterface.BUTTON_POSITIVE:
                                                             AlertDialog.Builder builder2 = new AlertDialog.Builder(view.getContext());
-                                                            builder2.setTitle("Motivo e o número da entrega em seu sistema (caso exista)");
+                                                            builder2.setTitle("Por favor escolha o motivo do cancelamento");
 
-                                                            final EditText input = new EditText(view.getContext());
-                                                            input.setInputType(InputType.TYPE_CLASS_TEXT );
-                                                            builder2.setView(input);
+                                                            final View pickerview = getLayoutInflater().inflate( R.layout.cancelamentopicker, null);
+                                                            builder2.setView(pickerview);
+                                                            ((RadioButton)pickerview.findViewById(R.id.radioButton5)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                                @Override
+                                                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                    pickerview.findViewById(R.id.outromotivobox).setVisibility(isChecked?View.VISIBLE:View.INVISIBLE);
+                                                                }
+                                                            });
 
                                                             builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
-                                                                     String motivo =input.getText().toString();
-                                                                     if(motivo.length()>=25)
+                                                                    String motivo="";
+                                                                    if(((RadioButton) pickerview.findViewById(R.id.radioButton5)).isChecked())
+                                                                    {
+                                                                        motivo= ((EditText) pickerview.findViewById(R.id.outromotivobox)).getText().toString();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        int radioButtonId = ((RadioGroup) pickerview.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+                                                                        motivo = ((RadioButton) pickerview.findViewById(radioButtonId)).getText().toString();
+
+                                                                    }
+                                                                     //String motivo ="input.getText().toString();";
+                                                                     if(motivo.length()>=10)
                                                                      {
                                                                          RequestParams rp = new RequestParams();
                                                                          rp.add("servID","445");
@@ -407,7 +425,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                              @Override
                                                                              public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                                                                  String resp= new String(responseBody);
-                                                                                 if(resp.equals("OK"))
+                                                                                 if(resp.equals("Cancelar pedido"))
                                                                                  {
                                                                                      findViewById(R.id.navigation_dashboard2).callOnClick();
                                                                                      utils.toast(view.getContext(),"Sucesso ao cancelar o pedido ");
@@ -429,7 +447,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                                      }
                                                                 }
                                                             });
-                                                            builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                            builder2.setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                     dialog.cancel();
@@ -461,19 +479,37 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                         case DialogInterface.BUTTON_POSITIVE:
 
                                                             AlertDialog.Builder builder2 = new AlertDialog.Builder(view.getContext());
-                                                            builder2.setTitle("Motivo e o número da entrega em seu sistema (caso exista)");
-                                                            final EditText input = new EditText(view.getContext());
-                                                            input.setInputType(InputType.TYPE_CLASS_TEXT );
-                                                            builder2.setView(input);
+                                                            builder2.setTitle("Por favor escolha o motivo do cancelamento");
 
-                                                            builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            final View pickerview = getLayoutInflater().inflate( R.layout.cancelamentopicker, null);
+                                                            builder2.setView(pickerview);
+                                                            ((RadioButton)pickerview.findViewById(R.id.radioButton5)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                                @Override
+                                                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                    pickerview.findViewById(R.id.outromotivobox).setVisibility(isChecked?View.VISIBLE:View.INVISIBLE);
+                                                                }
+                                                            });
+
+
+                                                            builder2.setPositiveButton("Cancelar pedido", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
-                                                                    cancelaPedido(input.getText().toString(),entrega.entregaid,view);
+                                                                    String motivo="";
+                                                                    if(((RadioButton) pickerview.findViewById(R.id.radioButton5)).isChecked())
+                                                                    {
+                                                                        motivo= ((EditText) pickerview.findViewById(R.id.outromotivobox)).getText().toString();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        int radioButtonId = ((RadioGroup) pickerview.findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+                                                                        motivo = ((RadioButton) pickerview.findViewById(radioButtonId)).getText().toString();
+
+                                                                    }
+                                                                    cancelaPedido(motivo,entrega.entregaid,view);
 
                                                                 }
                                                             });
-                                                            builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                            builder2.setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                     dialog.cancel();
@@ -505,6 +541,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                     public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
                                         RequestParams rp =new RequestParams();
                                         final Entrega entreg= (Entrega) adapterView.getItemAtPosition(i);
+                                        if(entreg.statusid==4)return;
                                         if(entreg.statusid!=0){
                                         rp.add("servID","773");
                                         rp.add("entreID",entreg.entregaid+"");
@@ -537,7 +574,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                     }
                                                 });
                                                     ((TextView)layout.findViewById(R.id.infoname)).setText(infs[0]);
-                                                    ((TextView)layout.findViewById(R.id.infotel)).setText(infs[1]);
+                                                    ((TextView)layout.findViewById(R.id.infotel)).setText("Suporte WhatsApp:\n21 99962-2725");
                                                     ((TextView)layout.findViewById(R.id.infodata)).setText("Data: "+ entreg.dataa);
                                                     ((TextView)layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: "+entreg.starthora);
                                                     ((TextView)layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " +(infs[3].equals("")?"--:--": infs[3].replace("-",":")));
@@ -547,7 +584,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                             .execute(loginPage.basesite+infs[2]);
 
                                                     BootstrapProgressBar progressBar= (BootstrapProgressBar)layout.findViewById(R.id.progbar2);
-                                                    progressBar.setProgress(entreg.statusid+1);
+                                                                                                        progressBar.setProgress(entreg.statusid+1);
                                                     if(entreg.statusid==0)progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);
                                                     else if(entreg.statusid<3)progressBar.setBootstrapBrand(DefaultBootstrapBrand.INFO);
                                                     else progressBar.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
