@@ -12,11 +12,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8df5ea9-6e2d-406c-aea0-7e249d271af0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/cancelamentopicker.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/entregador_clientefinal_info.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/release/output.json" beforeDir="false" afterPath="$PROJECT_DIR$/release/output.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/ClienteLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/ClienteLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/Entrega.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/Entrega.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/EntregadorLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/EntregadorLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/cliente_entregador_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/cliente_entregador_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/entregador_cliente_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/entregador_cliente_info.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +65,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ApkExportedModule" value="app" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="0050339154" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2019-11-30T03:28:13.658Z" />
     <property name="ExportApk.ApkPath" value="D:\GitHub\bikecycleapp\BikeCycleAndroid\app" />
@@ -70,7 +76,7 @@
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="D:/androidstudio/Android/android-sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
     <property name="not.eligible.for.single.variant.sync" value="true" />
     <property name="project.structure.last.edited" value="SDK Location" />
     <property name="project.structure.proportion" value="0.17" />
@@ -80,6 +86,11 @@
   </component>
   <component name="PsdUISettings">
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHub\bikecycleapp\BikeCycleAndroid\app\src\main\res\layout" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -197,22 +208,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="169" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602778579628" />
-    <state width="745" height="209" key="GridCell.Tab.0.bottom" timestamp="1602787262068">
+    <state width="1340" height="196" key="GridCell.Tab.0.bottom" timestamp="1604935214422">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="209" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602787262068" />
-    <state width="745" height="209" key="GridCell.Tab.0.center" timestamp="1602787262067">
+    <state width="1340" height="196" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1604935214422" />
+    <state width="1340" height="196" key="GridCell.Tab.0.center" timestamp="1604935214422">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="209" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602787262067" />
-    <state width="745" height="209" key="GridCell.Tab.0.left" timestamp="1602787262066">
+    <state width="1340" height="196" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1604935214422" />
+    <state width="1340" height="196" key="GridCell.Tab.0.left" timestamp="1604935214421">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="209" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602787262066" />
-    <state width="745" height="209" key="GridCell.Tab.0.right" timestamp="1602787262068">
+    <state width="1340" height="196" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1604935214421" />
+    <state width="1340" height="196" key="GridCell.Tab.0.right" timestamp="1604935214422">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="745" height="209" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602787262068" />
+    <state width="1340" height="196" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1604935214422" />
     <state x="297" y="0" key="SettingsEditor" timestamp="1600375999956">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -221,46 +232,46 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="168" y="117" width="1200" height="591" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1536.824@0.0.1536.824" timestamp="1600397760290" />
-    <state x="465" y="237" key="com.intellij.ide.util.TipDialog" timestamp="1602775993112">
+    <state x="465" y="237" key="com.intellij.ide.util.TipDialog" timestamp="1604940399865">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="237" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1602775993112" />
-    <state x="426" y="189" key="run.anything.popup" timestamp="1600376237974">
+    <state x="465" y="237" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1604940399865" />
+    <state x="426" y="189" key="run.anything.popup" timestamp="1602874161701">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="426" y="189" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1600376237974" />
+    <state x="426" y="189" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1602874161701" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/EntregadorLayout.java</url>
-          <line>765</line>
+          <line>972</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/EntregadorLayout.java</url>
-          <line>962</line>
+          <line>1169</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/EntregadorLayout.java</url>
-          <line>961</line>
+          <line>1168</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/EntregadorLayout.java</url>
-          <line>974</line>
+          <line>1181</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/ClienteLayout.java</url>
-          <line>456</line>
+          <line>463</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/ClienteLayout.java</url>
-          <line>468</line>
+          <line>475</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -270,7 +281,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/bikecycle/com/bikecycle/ClienteLayout.java</url>
-          <line>416</line>
+          <line>423</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>

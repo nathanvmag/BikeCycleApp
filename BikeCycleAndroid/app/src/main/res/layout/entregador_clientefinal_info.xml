@@ -1,0 +1,443 @@
+<?xml version="1.0dp" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fundo5"
+    android:padding="5dp"
+    app:barrierAllowsGoneWidgets="true">
+
+    <ScrollView
+        android:id="@+id/scrollclienteview"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:id="@+id/llayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/infoname5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:text="Dados Coleta:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:bootstrapBrand="regular" />
+
+            <TextView
+                android:id="@+id/infoname6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:tag="coleta_nome"
+                android:text="coleta nome"
+                android:textColor="#9a864b"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="coleta_cep"
+                android:text="Cep: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="coleta_estado"
+                android:text="Estado:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infodata2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="314dp"
+                android:layout_marginRight="0dp"
+                android:gravity="center"
+                android:tag="coleta_logradouro"
+                android:text="Logradouro:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="coleta_numero"
+                android:text="Nùmero: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="coleta_complemento"
+                android:text="Complemento: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="coleta_bairro"
+                android:text="Bairro: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="coleta_cidade"
+                android:text="Cidade:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum10dp3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/infoname2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:text="Dados Cliente:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:bootstrapBrand="regular" />
+
+            <TextView
+                android:id="@+id/infoname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:tag="cliente_nome"
+                android:text="Sem entregador"
+                android:textColor="#9a864b"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_email"
+                android:text="Email:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_cpf"
+                android:text="Cpf:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_rg"
+                android:text="RG"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_celular"
+                android:text="Celular"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_tel"
+                android:text="Telefone"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_cep"
+                android:text="Cep: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_estado"
+                android:text="Estado:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infodata3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="314dp"
+                android:layout_marginRight="0dp"
+                android:gravity="center"
+                android:tag="cliente_logradouro"
+                android:text="Logradouro:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_numero"
+                android:text="Nùmero: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_complemento"
+                android:text="Complemento: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_bairro"
+                android:text="Bairro: "
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infonum12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:tag="cliente_cidade"
+                android:text="Cidade:"
+                android:textColor="#9a864b"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/infostatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollclienteview"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="aguarando entregadr"
+        android:textColor="@color/bootstrap_gray"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <com.beardedhen.androidbootstrap.BootstrapProgressBar
+        android:id="@+id/progbar2"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/infostatus"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="5dp"
+        app:animated="false"
+        app:bootstrapBrand="warning"
+        app:bootstrapMaxProgress="4"
+        app:bootstrapProgress="0"
+        app:bootstrapshowPercentage="false"
+        app:roundedCorners="true"
+        app:striped="false" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/reporterror"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dimissinfo"
+        android:layout_centerHorizontal="true"
+        android:text="Reportar um problema"
+        android:textColor="@color/bootstrap_brand_secondary_border"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:bootstrapBrand="regular" />
+
+    <com.beardedhen.androidbootstrap.AwesomeTextView
+        android:id="@+id/dimissinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progbar2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Fechar"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:bootstrapBrand="danger" />
+
+    <TextView
+        android:id="@+id/idview"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:gravity="end"
+        android:text="#id"
+        android:textColor="@color/bootstrap_brand_info" />
+
+</RelativeLayout>

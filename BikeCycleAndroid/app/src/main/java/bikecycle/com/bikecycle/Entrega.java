@@ -3,7 +3,7 @@ package bikecycle.com.bikecycle;
 public class Entrega {
     public String[] status;
     public String entregaID,dataa,starthora,empresaID,alocada;
-    public int statusid=0,entregaid;
+    public int statusid=0,entregaid,clienteID;
 
     public Entrega(String entreid,String dt,String hr,int st,int entid,int md,String alo)
     {

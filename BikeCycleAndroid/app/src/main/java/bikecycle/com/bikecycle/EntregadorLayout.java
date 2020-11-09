@@ -45,10 +45,14 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -307,6 +311,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                     String[] infs= modules[i].split("!");
 
                                     Entrega e = new Entrega(infs[1],infs[4],infs[5],Integer.parseInt(infs[3]),Integer.parseInt(infs[0]),1,infs[6]);
+                                    e.clienteID= Integer.parseInt(infs[7]);
+
                                     if(e.statusid==4)continue;
                                     entregas.add(e);
                                     findViewById(R.id.textView2).setVisibility(View.INVISIBLE);
@@ -319,28 +325,32 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                                        RequestParams req =new RequestParams();
+
+
+                                        RequestParams req = new RequestParams();
                                         view.setEnabled(false);
-                                        final Entrega entreg= (Entrega) adapterView.getItemAtPosition(i);
-                                        utils.log("vamos ?");
-                                            req.add("servID","777");
-                                            req.add("entreID",entreg.entregaid+"");
+                                        final Entrega entreg = (Entrega) adapterView.getItemAtPosition(i);
+
+                                        if (entreg.clienteID == 0) {
+                                            utils.log("vamos ?");
+                                            req.add("servID", "777");
+                                            req.add("entreID", entreg.entregaid + "");
                                             view.setEnabled(false);
                                             HttpUtils.postByUrl(basesite + "application.php", req, new AsyncHttpResponseHandler() {
                                                 @Override
                                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                                     view.setEnabled(true);
-                                                    final String res= new String(responseBody);
+                                                    final String res = new String(responseBody);
                                                     utils.log(res);
-                                                    String[] infs= res.split("%",5);
+                                                    String[] infs = res.split("%", 5);
 
-                                                    if(infs.length==5){
-                                                        LayoutInflater inflater =getLayoutInflater();
+                                                    if (infs.length == 5) {
+                                                        LayoutInflater inflater = getLayoutInflater();
                                                         //Inflate the view from a predefined XML layout
                                                         View layout = inflater.inflate(R.layout.entregador_cliente_info,
-                                                                (ViewGroup) findViewById(R.id.mainlayout),false);
+                                                                (ViewGroup) findViewById(R.id.mainlayout), false);
                                                         // create a 300px width and 470px height PopupWindow
-                                                        final PopupWindow pw =new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT,
+                                                        final PopupWindow pw = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT,
                                                                 LinearLayout.LayoutParams.MATCH_PARENT, true);
                                                         // display the popup in the center
                                                         pw.showAtLocation(mainlayout, Gravity.CENTER, 0, 0);
@@ -350,53 +360,46 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                                 pw.dismiss();
                                                             }
                                                         });
-                                                        try{
-                                                            infs[1]="("+infs[1].substring(0,2)+") "+infs[1].substring(2,7)+"-"+infs[1].substring(7);
-                                                        }
-                                                        catch (Exception e){
+                                                        try {
+                                                            infs[1] = "(" + infs[1].substring(0, 2) + ") " + infs[1].substring(2, 7) + "-" + infs[1].substring(7);
+                                                        } catch (Exception e) {
 
                                                         }
 
-                                                        ((TextView)layout.findViewById(R.id.infoname)).setText(infs[0]);
-                                                        ((TextView)layout.findViewById(R.id.infotel)).setText(infs[1]);
-                                                        ((TextView)layout.findViewById(R.id.infodata)).setText("Data: "+ entreg.dataa);
-                                                        ((TextView)layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: "+entreg.starthora);
-                                                        ((TextView)layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " +(infs[3].equals("")?"--:--": infs[3].replace("-",":")));
-                                                        ((TextView)layout.findViewById(R.id.infostatus)).setText(entreg.status[entreg.statusid]);
-                                                        ((TextView)layout.findViewById(R.id.idview)).setText("#"+entreg.entregaid);
+                                                        ((TextView) layout.findViewById(R.id.infoname)).setText(infs[0]);
+                                                        ((TextView) layout.findViewById(R.id.infotel)).setText(infs[1]);
+                                                        ((TextView) layout.findViewById(R.id.infotel)).setVisibility(View.INVISIBLE);
+                                                        ((TextView) layout.findViewById(R.id.infodata)).setText("Data: " + entreg.dataa);
+                                                        ((TextView) layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: " + entreg.starthora);
+                                                        ((TextView) layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " + (infs[3].equals("") ? "--:--" : infs[3].replace("-", ":")));
+                                                        ((TextView) layout.findViewById(R.id.infostatus)).setText(entreg.status[entreg.statusid]);
+                                                        ((TextView) layout.findViewById(R.id.idview)).setText("#" + entreg.entregaid);
 
-                                                        try{
-                                                            infs[4]= infs[4].replace("?","%");
-                                                           String[]ends= infs[4].split("%",6);
-                                                            ((TextView)layout.findViewById(R.id.inforua)).setText("Rua: "+ends[0]);
-                                                            ((TextView)layout.findViewById(R.id.infonum5)).setText("Bairro: "+ends[1]);
-                                                            ((TextView)layout.findViewById(R.id.infonum3)).setText("Número: "+ends[2]);
-                                                            ((TextView)layout.findViewById(R.id.infonum4)).setText("Complemento: "+ends[3]);
-                                                            ((TextView)layout.findViewById(R.id.infonum)).setText("Cep: "+ends[4]);
-                                                            ((TextView)layout.findViewById(R.id.infonum2)).setText("Complemento: "+ends[5]);
+                                                        try {
+                                                            infs[4] = infs[4].replace("?", "%");
+                                                            String[] ends = infs[4].split("%", 6);
+                                                            ((TextView) layout.findViewById(R.id.inforua)).setText("Rua: " + ends[0]);
+                                                            ((TextView) layout.findViewById(R.id.infonum5)).setText("Bairro: " + ends[1]);
+                                                            ((TextView) layout.findViewById(R.id.infonum3)).setText("Número: " + ends[2]);
+                                                            ((TextView) layout.findViewById(R.id.infonum4)).setText("Complemento: " + ends[3]);
+                                                            ((TextView) layout.findViewById(R.id.infonum)).setText("Cep: " + ends[4]);
+                                                            ((TextView) layout.findViewById(R.id.infonum2)).setText("Complemento: " + ends[5]);
 
-                                                        }
-
-                                                        catch (Exception e)
-                                                        {
+                                                        } catch (Exception e) {
 
                                                         }
-                                                        final BootstrapButton chegoentrega= layout.findViewById(R.id.saiuent);
-                                                        final BootstrapButton finalizaPed= layout.findViewById(R.id.finalizaped);
+                                                        final BootstrapButton chegoentrega = layout.findViewById(R.id.saiuent);
+                                                        final BootstrapButton finalizaPed = layout.findViewById(R.id.finalizaped);
                                                         chegoentrega.setVisibility(View.INVISIBLE);
                                                         finalizaPed.setVisibility(View.INVISIBLE);
-                                                        if(entreg.statusid==1)
-                                                        {
+                                                        if (entreg.statusid == 1) {
                                                             chegoentrega.setShowOutline(false);
-                                                        }
-                                                        else if(entreg.statusid>=2)
-                                                        {
+                                                        } else if (entreg.statusid >= 2) {
                                                             chegoentrega.setShowOutline(true);
                                                             chegoentrega.setText("Pedido Enviado");
                                                             chegoentrega.setEnabled(false);
                                                         }
-                                                        if(entreg.statusid==3)
-                                                        {
+                                                        if (entreg.statusid == 3) {
                                                             finalizaPed.setText("Pedido Finalizado");
                                                             finalizaPed.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
                                                             finalizaPed.setShowOutline(true);
@@ -405,8 +408,8 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                         chegoentrega.setOnClickListener(new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View view) {
-                                                               // changest(2,entreg.entregaid,entreg.empresaID,entreg.statusid,2);
-                                                               // pw.dismiss();
+                                                                // changest(2,entreg.entregaid,entreg.empresaID,entreg.statusid,2);
+                                                                // pw.dismiss();
 
                                                                 findViewById(R.id.navigation_dashboard).callOnClick();
                                                             }
@@ -421,44 +424,41 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
 
                                                             }
                                                         });
-                                                        if(entreg.statusid==1||entreg.statusid==2)
-                                                        {
+                                                        if (entreg.statusid == 1 || entreg.statusid == 2) {
                                                             layout.findViewById(R.id.reporterror).setVisibility(View.VISIBLE);
                                                             layout.findViewById(R.id.reporterror).setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(final View view) {
                                                                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                                                                     LayoutInflater lt = getLayoutInflater();
-                                                                    final View ratingalert=lt.inflate(R.layout.reporterror, mainlayout,false);
+                                                                    final View ratingalert = lt.inflate(R.layout.reporterror, mainlayout, false);
                                                                     builder.setView(ratingalert);
 
                                                                     builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                                                                         @Override
                                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                                             RequestParams rps = new RequestParams();
-                                                                            rps.add("servID","887");
-                                                                            rps.add("id",myid);
-                                                                            rps.add("title","Reportar um problema -"+((BootstrapEditText)ratingalert.findViewById(R.id.reclamatitle)).getText().toString());
-                                                                            rps.add("mess",((BootstrapEditText)ratingalert.findViewById(R.id.reclamabody)).getText().toString());
-                                                                            rps.add("from","0");
+                                                                            rps.add("servID", "887");
+                                                                            rps.add("id", myid);
+                                                                            rps.add("title", "Reportar um problema -" + ((BootstrapEditText) ratingalert.findViewById(R.id.reclamatitle)).getText().toString());
+                                                                            rps.add("mess", ((BootstrapEditText) ratingalert.findViewById(R.id.reclamabody)).getText().toString());
+                                                                            rps.add("from", "0");
                                                                             HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
                                                                                 @Override
                                                                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                                                    String res= new String(responseBody);
-                                                                                    if (res.equals("OK"))
-                                                                                    {
-                                                                                        utils.toast(getApplicationContext(),"Sucesso ao reportar o problema ");
+                                                                                    String res = new String(responseBody);
+                                                                                    if (res.equals("OK")) {
+                                                                                        utils.toast(getApplicationContext(), "Sucesso ao reportar o problema ");
 
-                                                                                    }
-                                                                                    else{
-                                                                                        utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
+                                                                                    } else {
+                                                                                        utils.toast(getApplicationContext(), "Falha ao reportar o problema " + new String(responseBody));
 
                                                                                     }
                                                                                 }
 
                                                                                 @Override
                                                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                                                    utils.noInternetLog(getApplicationContext(),view);
+                                                                                    utils.noInternetLog(getApplicationContext(), view);
 
                                                                                     //utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
                                                                                 }
@@ -477,32 +477,239 @@ public class EntregadorLayout extends AppCompatActivity implements  Runnable
                                                             });
                                                         }
                                                         new DownloadImageTask2((BootstrapCircleThumbnail) layout.findViewById(R.id.infofoto))
-                                                                .execute(loginPage.basesite+infs[2]);
-                                                        BootstrapProgressBar progressBar= (BootstrapProgressBar)layout.findViewById(R.id.progbar2);
-                                                        progressBar.setProgress(entreg.statusid+1);
-                                                        if(entreg.statusid==0)progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);
-                                                        else if(entreg.statusid<3)progressBar.setBootstrapBrand(DefaultBootstrapBrand.INFO);
-                                                        else progressBar.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
-                                                        int stID= entreg.statusid;
+                                                                .execute(loginPage.basesite + infs[2]);
+                                                        BootstrapProgressBar progressBar = (BootstrapProgressBar) layout.findViewById(R.id.progbar2);
+                                                        progressBar.setProgress(entreg.statusid + 1);
+                                                        if (entreg.statusid == 0)
+                                                            progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);
+                                                        else if (entreg.statusid < 3)
+                                                            progressBar.setBootstrapBrand(DefaultBootstrapBrand.INFO);
+                                                        else
+                                                            progressBar.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                                                        int stID = entreg.statusid;
 
-                                                }}
+                                                    }
+                                                }
 
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                                     view.setEnabled(true);
-                                                    utils.noInternetLog(getApplicationContext(),view);
+                                                    utils.noInternetLog(getApplicationContext(), view);
 
                                                     // Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
                                                 }
                                             });
 
-                                };
+                                        }else{
+                                            utils.log("Logica cliente especial");
 
+                                            utils.log("vamos ?");
+                                            req.add("servID", "89");
+                                            req.add("entreID", entreg.clienteID + "");
+                                            view.setEnabled(false);
+                                            HttpUtils.postByUrl(basesite + "application.php", req, new AsyncHttpResponseHandler() {
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    view.setEnabled(true);
+                                                    final String res = new String(responseBody);
+                                                    utils.log("Resposta json" + res);
+                                                    try {
+                                                        JSONObject jsonObject = new JSONObject(res);
+                                                        LayoutInflater inflater = getLayoutInflater();
+                                                        //Inflate the view from a predefined XML layout
+                                                        View layout = inflater.inflate(R.layout.entregador_clientefinal_info,
+                                                                (ViewGroup) findViewById(R.id.mainlayout), false);
+                                                        // create a 300px width and 470px height PopupWindow
+                                                        final PopupWindow pw = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                LinearLayout.LayoutParams.MATCH_PARENT, true);
+                                                        // display the popup in the center
+                                                        pw.showAtLocation(mainlayout, Gravity.CENTER, 0, 0);
+                                                        layout.findViewById(R.id.dimissinfo).setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                pw.dismiss();
+                                                            }
+                                                        });
+
+                                                        Iterator<String> keys = jsonObject.keys();
+                                                        LinearLayout linearLayout= layout.findViewById(R.id.llayout);
+                                                        while(keys.hasNext()) {
+
+                                                            String key = keys.next();
+                                                            String value= jsonObject.getString(key);
+                                                            try {
+                                                                TextView tx = linearLayout.findViewWithTag(key);
+                                                                if(!value.isEmpty()) {
+
+                                                                    String myString = key.split("_")[1];
+                                                                    String upperString = myString.substring(0, 1).toUpperCase() + myString.substring(1).toLowerCase();
+                                                                    tx.setText(upperString + ": " + value);
+                                                                    utils.log(value);
+                                                                }
+                                                                else{
+                                                                    tx.setVisibility(View.GONE);
+                                                                }
+                                                            }
+                                                            catch(Exception ex){
+                                                                utils.log("Falhou tag "+key);
+                                                            }
+                                                        }
+                                                        if (entreg.statusid == 1 || entreg.statusid == 2) {
+                                                            layout.findViewById(R.id.reporterror).setVisibility(View.VISIBLE);
+                                                            layout.findViewById(R.id.reporterror).setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(final View view) {
+                                                                    final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                                                    LayoutInflater lt = getLayoutInflater();
+                                                                    final View ratingalert = lt.inflate(R.layout.reporterror, mainlayout, false);
+                                                                    builder.setView(ratingalert);
+
+                                                                    builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                                            RequestParams rps = new RequestParams();
+                                                                            rps.add("servID", "887");
+                                                                            rps.add("id", myid);
+                                                                            rps.add("title", "Reportar um problema -" + ((BootstrapEditText) ratingalert.findViewById(R.id.reclamatitle)).getText().toString());
+                                                                            rps.add("mess", ((BootstrapEditText) ratingalert.findViewById(R.id.reclamabody)).getText().toString());
+                                                                            rps.add("from", "0");
+                                                                            HttpUtils.postByUrl(basesite + "application.php", rps, new AsyncHttpResponseHandler() {
+                                                                                @Override
+                                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                                    String res = new String(responseBody);
+                                                                                    if (res.equals("OK")) {
+                                                                                        utils.toast(getApplicationContext(), "Sucesso ao reportar o problema ");
+
+                                                                                    } else {
+                                                                                        utils.toast(getApplicationContext(), "Falha ao reportar o problema " + new String(responseBody));
+
+                                                                                    }
+                                                                                }
+
+                                                                                @Override
+                                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                                    utils.noInternetLog(getApplicationContext(), view);
+
+                                                                                    //utils.toast(getApplicationContext(),"Falha ao reportar o problema "+ new String(responseBody));
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                                        }
+                                                                    });
+                                                                    builder.setTitle("Reportar um problema");
+                                                                    builder.create().show();
+
+                                                                }
+                                                            });
+                                                        }
+
+                                                        ((TextView) layout.findViewById(R.id.idview)).setText("#" + entreg.entregaid);
+                                                        ((TextView) layout.findViewById(R.id.infostatus)).setText(entreg.status[entreg.statusid]);
+
+
+
+                                                       /* try {
+                                                            infs[1] = "(" + infs[1].substring(0, 2) + ") " + infs[1].substring(2, 7) + "-" + infs[1].substring(7);
+                                                        } catch (Exception e) {
+
+                                                        }
+
+                                                        ((TextView) layout.findViewById(R.id.infoname)).setText(infs[0]);
+                                                        ((TextView) layout.findViewById(R.id.infotel)).setText(infs[1]);
+                                                        ((TextView) layout.findViewById(R.id.infodata)).setText("Data: " + entreg.dataa);
+                                                        ((TextView) layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: " + entreg.starthora);
+                                                        ((TextView) layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " + (infs[3].equals("") ? "--:--" : infs[3].replace("-", ":")));
+
+                                                        try {
+                                                            infs[4] = infs[4].replace("?", "%");
+                                                            String[] ends = infs[4].split("%", 6);
+                                                            ((TextView) layout.findViewById(R.id.inforua)).setText("Rua: " + ends[0]);
+                                                            ((TextView) layout.findViewById(R.id.infonum5)).setText("Bairro: " + ends[1]);
+                                                            ((TextView) layout.findViewById(R.id.infonum3)).setText("Número: " + ends[2]);
+                                                            ((TextView) layout.findViewById(R.id.infonum4)).setText("Complemento: " + ends[3]);
+                                                            ((TextView) layout.findViewById(R.id.infonum)).setText("Cep: " + ends[4]);
+                                                            ((TextView) layout.findViewById(R.id.infonum2)).setText("Complemento: " + ends[5]);
+
+                                                        } catch (Exception e) {
+
+                                                        }
+                                                        final BootstrapButton chegoentrega = layout.findViewById(R.id.saiuent);
+                                                        final BootstrapButton finalizaPed = layout.findViewById(R.id.finalizaped);
+                                                        chegoentrega.setVisibility(View.INVISIBLE);
+                                                        finalizaPed.setVisibility(View.INVISIBLE);
+                                                        if (entreg.statusid == 1) {
+                                                            chegoentrega.setShowOutline(false);
+                                                        } else if (entreg.statusid >= 2) {
+                                                            chegoentrega.setShowOutline(true);
+                                                            chegoentrega.setText("Pedido Enviado");
+                                                            chegoentrega.setEnabled(false);
+                                                        }
+                                                        if (entreg.statusid == 3) {
+                                                            finalizaPed.setText("Pedido Finalizado");
+                                                            finalizaPed.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                                                            finalizaPed.setShowOutline(true);
+                                                            finalizaPed.setEnabled(false);
+                                                        }
+                                                        chegoentrega.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                // changest(2,entreg.entregaid,entreg.empresaID,entreg.statusid,2);
+                                                                // pw.dismiss();
+
+                                                                findViewById(R.id.navigation_dashboard).callOnClick();
+                                                            }
+                                                        });
+                                                        finalizaPed.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                //changest(3,entreg.entregaid,entreg.empresaID,entreg.statusid,3);
+                                                                //pw.dismiss();
+
+                                                                //findViewById(R.id.navigation_dashboard).callOnClick();
+
+                                                            }
+                                                        });
+
+
+                                                    */
+                                                        BootstrapProgressBar progressBar = (BootstrapProgressBar) layout.findViewById(R.id.progbar2);
+                                                        progressBar.setProgress(entreg.statusid + 1);
+                                                        if (entreg.statusid == 0)
+                                                            progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);
+                                                        else if (entreg.statusid < 3)
+                                                            progressBar.setBootstrapBrand(DefaultBootstrapBrand.INFO);
+                                                        else
+                                                            progressBar.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                                                    } catch (JSONException err) {
+                                                        view.setEnabled(true);
+                                                        utils.noInternetLog(getApplicationContext(), view);
+                                                    }
+                                                }
+
+
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                    view.setEnabled(true);
+                                                    utils.noInternetLog(getApplicationContext(), view);
+
+                                                    // Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+
+
+                                        }
+
+                                    }
                         });}
                         catch (Exception e)
                             {
                                 findViewById(R.id.textView2).setVisibility(View.VISIBLE);
-
+                                utils.log(e.toString());
                                 Toast.makeText(getApplicationContext(),"Falha ao obter histórico  "+new String(responseBody),Toast.LENGTH_LONG).show();
                             }
                         }

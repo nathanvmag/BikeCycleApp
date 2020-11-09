@@ -37,17 +37,22 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapCircleThumbnail;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.beardedhen.androidbootstrap.BootstrapProgressBar;
 import com.beardedhen.androidbootstrap.api.defaults.DefaultBootstrapBrand;
 import com.google.android.gms.common.api.Api;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -91,6 +96,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                         }
                     });
+
 
                     findViewById(R.id.solicitaalocado).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -366,6 +372,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                 {
                                     String[] infs= modules[i].split("!");
                                     Entrega e = new Entrega(infs[2],infs[4],infs[5], parseInt(infs[3]), parseInt(infs[0]),0,infs[6]);
+                                    e.clienteID= parseInt( infs[7]);
                                     ents.add(e);
                                     tx.setVisibility(View.INVISIBLE);
 
@@ -575,6 +582,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                                                 });
                                                     ((TextView)layout.findViewById(R.id.infoname)).setText(infs[0]);
                                                     ((TextView)layout.findViewById(R.id.infotel)).setText("Suporte WhatsApp:\n21 99962-2725");
+                                                    ((TextView)layout.findViewById(R.id.infotel)).setVisibility(View.INVISIBLE);
                                                     ((TextView)layout.findViewById(R.id.infodata)).setText("Data: "+ entreg.dataa);
                                                     ((TextView)layout.findViewById(R.id.horater2)).setText("Pedido iniciado às: "+entreg.starthora);
                                                     ((TextView)layout.findViewById(R.id.horaini)).setText("Pedido Finalizado às: " +(infs[3].equals("")?"--:--": infs[3].replace("-",":")));
@@ -689,7 +697,105 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
 
                                                         }}
                                                     });
+                                                    layout.findViewById(R.id.infclientefinal).setVisibility(entreg.clienteID==0?View.GONE:View.VISIBLE);
+                                                    if(entreg.clienteID!=0){
+                                                        layout.findViewById(R.id.infclientefinal).setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                utils.log("Logica cliente especial");
+                                                                RequestParams req= new RequestParams();
+                                                                utils.log("vamos ?");
+                                                                req.add("servID", "89");
+                                                                req.add("entreID", entreg.clienteID + "");
+                                                                view.setEnabled(false);
+                                                                HttpUtils.postByUrl(basesite + "application.php", req, new AsyncHttpResponseHandler() {
+                                                                    @Override
+                                                                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                        view.setEnabled(true);
+                                                                        final String res = new String(responseBody);
+                                                                        utils.log("Resposta json" + res);
+                                                                        try {
+                                                                            JSONObject jsonObject = new JSONObject(res);
+                                                                            LayoutInflater inflater = getLayoutInflater();
+                                                                            //Inflate the view from a predefined XML layout
+                                                                            View layout = inflater.inflate(R.layout.entregador_clientefinal_info,
+                                                                                    (ViewGroup) findViewById(R.id.mainlayout), false);
+                                                                            // create a 300px width and 470px height PopupWindow
+                                                                            final PopupWindow pw = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                                    LinearLayout.LayoutParams.MATCH_PARENT, true);
+                                                                            // display the popup in the center
+                                                                            pw.showAtLocation(mainlayout, Gravity.CENTER, 0, 0);
+                                                                            layout.findViewById(R.id.dimissinfo).setOnClickListener(new View.OnClickListener() {
+                                                                                @Override
+                                                                                public void onClick(View view) {
+                                                                                    pw.dismiss();
+                                                                                }
+                                                                            });
+
+                                                                            Iterator<String> keys = jsonObject.keys();
+                                                                            LinearLayout linearLayout= layout.findViewById(R.id.llayout);
+                                                                            while(keys.hasNext()) {
+
+                                                                                String key = keys.next();
+                                                                                String value= jsonObject.getString(key);
+                                                                                try {
+                                                                                    TextView tx = linearLayout.findViewWithTag(key);
+                                                                                    if(!value.isEmpty()) {
+
+                                                                                        String myString = key.split("_")[1];
+                                                                                        String upperString = myString.substring(0, 1).toUpperCase() + myString.substring(1).toLowerCase();
+                                                                                        tx.setText(upperString + ": " + value);
+                                                                                        utils.log(value);
+                                                                                    }
+                                                                                    else{
+                                                                                        tx.setVisibility(View.GONE);
+                                                                                    }
+                                                                                }
+                                                                                catch(Exception ex){
+                                                                                    utils.log("Falhou tag "+key);
+                                                                                }
+                                                                            }
+                                                                            layout.findViewById(R.id.reporterror).setVisibility(View.INVISIBLE);
+
+                                                                            ((TextView) layout.findViewById(R.id.idview)).setText("#" + entreg.entregaid);
+                                                                            ((TextView) layout.findViewById(R.id.infostatus)).setText(entreg.status[entreg.statusid]);
+
+                                                                            BootstrapProgressBar progressBar = (BootstrapProgressBar) layout.findViewById(R.id.progbar2);
+                                                                            progressBar.setProgress(entreg.statusid + 1);
+                                                                            if (entreg.statusid == 0)
+                                                                                progressBar.setBootstrapBrand(DefaultBootstrapBrand.WARNING);
+                                                                            else if (entreg.statusid < 3)
+                                                                                progressBar.setBootstrapBrand(DefaultBootstrapBrand.INFO);
+                                                                            else
+                                                                                progressBar.setBootstrapBrand(DefaultBootstrapBrand.SUCCESS);
+                                                                        } catch (JSONException err) {
+                                                                            view.setEnabled(true);
+                                                                            utils.noInternetLog(getApplicationContext(), view);
+                                                                        }
+                                                                    }
+
+
+
+                                                                    @Override
+                                                                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                        view.setEnabled(true);
+                                                                        utils.noInternetLog(getApplicationContext(), view);
+
+                                                                        // Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                });
+
+
+                                                            }
+
+
+
+                                                        });
+
+                                                    }
+
                                                 }
+
                                             else{
                                                     Toast.makeText(getApplicationContext(),"Falha ao abrir informações "+new String(responseBody),Toast.LENGTH_LONG).show();
 
@@ -896,6 +1002,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_layout);
+        mainlayout= findViewById(R.id.clientelayoutmain);
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
        /* Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler()
@@ -910,7 +1018,6 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         });*/
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation2);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mainlayout= findViewById(R.id.clientelayoutmain);
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             nome= extras.getString("nome");
@@ -1077,7 +1184,8 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
         HttpUtils.postByUrl(basesite + "application.php", requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                checkAceitartermos();
+               //
+
 
                 String resp= new String(responseBody);
                 try{
@@ -1093,6 +1201,7 @@ public class ClienteLayout extends AppCompatActivity implements Runnable
                         findViewById(R.id.permitavulso).setVisibility(View.INVISIBLE);
                         ((BootstrapButton)findViewById(R.id.solicita)).setEnabled(true);
                     }
+                    checkAceitartermos();
 
                 }
                 catch (Exception e)
