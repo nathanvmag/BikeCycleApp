@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/3ba544fccb8ff96b6fdeb21e1998da79/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/3ba544fccb8ff96b6fdeb21e1998da79/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/3ba544fccb8ff96b6fdeb21e1998da79/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

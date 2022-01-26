@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../BikeCycleAndroid.iml" filepath="$PROJECT_DIR$/../BikeCycleAndroid.iml" group="BikeCycleAndroid" />
-      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="BikeCycleAndroid/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/965249138/BikeCycleAndroid.iml" filepath="$PROJECT_DIR$/.idea/modules/965249138/BikeCycleAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BikeCycleAndroid.app.iml" filepath="$PROJECT_DIR$/.idea/modules/BikeCycleAndroid.app.iml" />
     </modules>
   </component>
 </project>

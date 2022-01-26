@@ -1,11 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: ./libs/androidbootstrap-2.3.2.aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/81ae9d22321363c265895cc40a09a371/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/f15a522c76a13b1d4810069f5f6f1103/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/81ae9d22321363c265895cc40a09a371/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/81ae9d22321363c265895cc40a09a371/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/f15a522c76a13b1d4810069f5f6f1103/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/f15a522c76a13b1d4810069f5f6f1103/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidbootstrap-2.3.2.aar/f15a522c76a13b1d4810069f5f6f1103/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

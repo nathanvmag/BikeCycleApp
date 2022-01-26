@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-measurement-connector-16.0.0.aar/bac1d0930a3bbd2182254c2e2d51ad9a/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-measurement-connector-16.0.0.aar/bac1d0930a3bbd2182254c2e2d51ad9a/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-measurement-connector-16.0.0.aar/bac1d0930a3bbd2182254c2e2d51ad9a/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
